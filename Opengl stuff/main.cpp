@@ -2,19 +2,29 @@
 #include <vector>
 
 
+
 using namespace std;
 
 float ang = .005, x = 0, y = 0, z = 0;
 bool m_left = 0, m_right = 0, m_up = 0, m_down = 0;
 
 float width = 250, height = 250;
-static Quaternion points[13];
+static Quat points[13];
 GameEngine *game = new GameEngine("The Real Game", 0, 1000, 800);
+GLSLCompiler colourProgram, colourProgram2;
 Logger tlog;
 
-//GLSL_Compiler colourProg;
+//GLSLCompiler colourProg;
 
+void shaderInit()
+{
+	//shader initialization
+	colourProgram.compileShaders("Shaders/Colour Shading.vtsh", "Shaders/Colour Shading.fmsh");
+	colourProgram.linkShaders();
+	colourProgram2.compileShaders("Shaders/Colour Shading 2.vtsh", "Shaders/Colour Shading 2.fmsh");
+	colourProgram2.linkShaders();
 
+}
 
 //creates a triangle in pixles
 void drawTriangle(float x, float y, float w, float h)
@@ -30,7 +40,7 @@ void drawTriangle(float x, float y, float w, float h)
 	glEnd();
 }
 
-void drawPyrimid(Quaternion points[12], float width, float height)
+void drawPyrimid(Quat points[12], float width, float height)
 {
 	Size winSize/* = {glutGet(GLUT_WINDOW_WIDTH),	glutGet(GLUT_WINDOW_HEIGHT)}*/;
 	//static Quaternion points[12];
@@ -121,22 +131,22 @@ void keyInputReleased(int key, int mod)
 
 void update()
 {
-	//left-right rotation
-	if(m_left || m_right)
-	{
-		points[0].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
-		points[1].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
-		points[2].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
-		points[3].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
-		points[4].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
-		points[5].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
-		points[6].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
-		points[7].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
-		points[8].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
-		points[9].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
-		points[10].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
-		points[11].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
-	}
+	////left-right rotation
+	//if(m_left || m_right)
+	//{
+	//	points[0].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
+	//	points[1].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
+	//	points[2].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
+	//	points[3].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
+	//	points[4].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
+	//	points[5].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
+	//	points[6].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
+	//	points[7].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
+	//	points[8].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
+	//	points[9].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
+	//	points[10].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
+	//	points[11].rotate(m_right ? -ang : ang, 0, m_left || m_right, 0);
+	//}
 
 	////up-down rotation
 	//if(m_up || m_down)
@@ -156,22 +166,22 @@ void update()
 	//}
 
 
-	////Z movement
-	//if(m_up || m_down)
-	//{
-	//	points[0] += Quat {0,0,0,m_up ? ang : -ang};
-	//	points[1] += Quat {0,0,0,m_up ? ang : -ang};
-	//	points[2] += Quat {0,0,0,m_up ? ang : -ang};
-	//	points[3] += Quat {0,0,0,m_up ? ang : -ang};
-	//	points[4] += Quat {0,0,0,m_up ? ang : -ang};
-	//	points[5] += Quat {0,0,0,m_up ? ang : -ang};
-	//	points[6] += Quat {0,0,0,m_up ? ang : -ang};
-	//	points[7] += Quat {0,0,0,m_up ? ang : -ang};
-	//	points[8] += Quat {0,0,0,m_up ? ang : -ang};
-	//	points[9] += Quat {0,0,0,m_up ? ang : -ang};
-	//	points[10] += Quat {0,0,0,m_up ? ang : -ang};
-	//	points[11] += Quat {0,0,0,m_up ? ang : -ang};
-	//}
+	//Z movement
+	if(m_up || m_down)
+	{
+		points[0] += Quat {0,0,0,m_up ? ang : -ang};
+		points[1] += Quat {0,0,0,m_up ? ang : -ang};
+		points[2] += Quat {0,0,0,m_up ? ang : -ang};
+		points[3] += Quat {0,0,0,m_up ? ang : -ang};
+		points[4] += Quat {0,0,0,m_up ? ang : -ang};
+		points[5] += Quat {0,0,0,m_up ? ang : -ang};
+		points[6] += Quat {0,0,0,m_up ? ang : -ang};
+		points[7] += Quat {0,0,0,m_up ? ang : -ang};
+		points[8] += Quat {0,0,0,m_up ? ang : -ang};
+		points[9] += Quat {0,0,0,m_up ? ang : -ang};
+		points[10] += Quat {0,0,0,m_up ? ang : -ang};
+		points[11] += Quat {0,0,0,m_up ? ang : -ang};
+	}
 
 	//scale
 	if(m_left || m_right)
@@ -219,13 +229,29 @@ void update()
 
 }
 
+
 void render()
 {
+	static float time;
+	time += 0.01;
 
-	drawPyrimid(points, 250, 250);
+	
 
-	//glFlush();
-	update();
+	//drawPyrimid(points, 250, 250);
+		
+
+	//sprite.setRotation(45);
+	GLint uniTime = colourProgram.getUniformLocation("tm");
+	
+	glUniform1f(uniTime, time);
+	
+	////colourProgram.enable();
+	//sprite->draw();
+	//sprite2->draw();
+	//_colourProgram.disable();
+	//_colourProgram2.enable();
+	//sprite2.draw();
+	//_colourProgram2.disable(); 
 }
 
 //Callback Example
@@ -234,7 +260,7 @@ void callBack(int thing(int, double))
 	thing(2, 4);
 }
 
-void main(int argA, char** argB)
+void main()
 {
 	Size winSize = {game->getWindowWidth(),	game->getWindowHeight()};
   //front
@@ -255,8 +281,20 @@ void main(int argA, char** argB)
 	points[11] = points[7];
 
 
+	Sprite
+		*sprite = new Sprite({{-.5,0}, {1,2}}, "Assets/bleach.jpg"),
+		*sprite2 = new Sprite({{.5f,0}, {1,2}}, "Assets/bleach.jpg");
+
+	printf("passed the hard part");
+
+	game->addSprite(sprite);
+	game->addSprite(sprite2);
+
+	//for(int a=0;a<998;a++)
+	//game->addSprite(new Sprite({{-.5,0}, {1,2}}, "Assets/RandomButton.png"));
 	//engine stuff
-	game->backgroundColour(0, 0, 0);
+	//game->backgroundColour(0, 0, 0);
+	game->shaderInit(shaderInit);
 	game->keyPressed(keyInputPressed);
 	game->keyReleased(keyInputReleased);
 	game->renderUpdate(render);

@@ -1,9 +1,19 @@
 #version 410
 
-in vec3 vertPos
+layout (location  = 0) in vec3 vertPos; 
+layout (location  = 1) in vec4 vertCol; 
+layout (location  = 2) in vec2 vertUV;
+
+out vec4 fragColour;
+out vec3 fragPos;
+out vec2 fragUV;
 
 void main()
 {
-gl_Position.xyz=vertPosition;
-gl_Position.w=1.0;
+	gl_Position.xyz = vertPos;
+	gl_Position.w=1.0;
+
+	fragColour = vertCol;
+	fragPos = vertPos;
+	fragUV =  vec2(vertUV.x, 1 - vertUV.y); 
 }

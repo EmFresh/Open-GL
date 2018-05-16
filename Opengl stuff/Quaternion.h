@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
-#include "Matrix.h"
+//#include "Matrix.h"
 
 #define degtorad(deg) (deg*M_PI/180)
 
@@ -11,6 +11,50 @@
 struct Quat
 {
 	float w, x, y, z;
+
+
+	Quat & rotation(float a_ang, float a_dirX, float a_dirY, float a_dirZ)
+	{
+
+		float unit(sqrt(pow(a_dirX, 2) + pow(a_dirY, 2) + pow(a_dirZ, 2)));
+
+		Quat
+			q {cos(a_ang / 2),sin(a_ang / 2)*  (a_dirX / unit),sin(a_ang / 2)*  (a_dirY / unit),sin(a_ang / 2)*  (a_dirZ / unit)},
+			qc {cos(a_ang / 2),sin(a_ang / 2)* -(a_dirX / unit),sin(a_ang / 2)* -(a_dirY / unit),sin(a_ang / 2)* -(a_dirZ / unit)},
+			p {0, x,y,z};
+		Quat rot = q * p * qc;
+		return rot;
+	}
+
+	void rotate(float a_ang, float a_dirX, float a_dirY, float a_dirZ)
+	{
+		*this = rotation(a_ang, a_dirX, a_dirY, a_dirZ);
+	}
+
+	void scale(float x, float y, float z)
+	{
+	
+	}
+
+	void scale(float xyz)
+	{
+		scale(xyz, xyz, xyz);
+	}
+
+	void shear(float x, float y, float z)
+	{}
+
+	void shear(float xy)
+	{}
+
+	void print() const
+	{
+		printf("(");
+		for(int a = 0; a < 4; a++)
+			printf(std::string("%f" + std::string(a != 3 ? ", " : "")).c_str(), this[0][a]);
+		printf(")\n\n");
+	}
+
 	float& operator[](int index)const
 	{
 		float *e = nullptr;
@@ -54,32 +98,33 @@ struct Quat
 	}
 };
 
-class Quaternion : public Matrix
-{
-public:
-
-	Quaternion();
-	Quaternion(Quat);
-	~Quaternion();
-
-	Quaternion & rotation(float a_ang, float a_dirX, float a_dirY, float a_dirZ);
-
-	void rotate(float a_ang, float a_dirX, float a_dirY, float a_dirZ);
-
-	void scale(float x, float y, float z = 1);
-	void scale(float xyz);
-	void shear(float x, float y, float z = 1);
-	void shear(float xy);
-
-	void print()const;
-
-	Quaternion& operator*(Quaternion a_quat)const;
-	Quaternion& operator+(Quaternion a_quat);
-	void operator+=(Quaternion quat);
-	void operator=(Quat);
-	float operator[](int)const;
-
-private:
-	Quat m_quat;
-};
+//class Quaternion : public Matrix
+//{
+//public:
+//
+//	Quaternion();
+//	Quaternion(Quat);
+//	~Quaternion();
+//
+//	Quat& getQuat();	
+//
+//	Quaternion & rotation(float a_ang, float a_dirX, float a_dirY, float a_dirZ);
+//
+//	void rotate(float a_ang, float a_dirX, float a_dirY, float a_dirZ);
+//	void scale(float x, float y, float z = 1);
+//	void scale(float xyz);
+//	void shear(float x, float y, float z = 1);
+//	void shear(float xy);
+//
+//	void print()const;
+//
+//	Quaternion& operator*(Quaternion a_quat)const;
+//	Quaternion& operator+(Quaternion a_quat);
+//	void operator+=(Quaternion quat);
+//	void operator=(Quat);
+//	float operator[](int)const;
+//
+//private:
+//	Quat m_quat;
+//};
 

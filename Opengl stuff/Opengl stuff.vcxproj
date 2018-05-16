@@ -76,12 +76,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\100655604\Downloads\glfw-3.2.1.bin.WIN32\include;C:\Users\100655604\Downloads\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Opengl stuff\Externals\SOIL2\include;$(SolutionDir)Opengl stuff\Externals\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)Opengl stuff\Externals\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\100655604\Downloads\glfw-3.2.1.bin.WIN32\lib-vc2015;C:\Users\100655604\Downloads\glew-2.1.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Opengl stuff\Externals\SOIL2\lib;$(SolutionDir)Opengl stuff\Externals\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)Opengl stuff\Externals\glew-2.1.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>soil2-debug.lib;opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -100,14 +100,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\100655604\Downloads\glfw-3.2.1.bin.WIN32\include;C:\Users\100655604\Downloads\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Opengl stuff\Externals\SOIL2\include;$(SolutionDir)Opengl stuff\Externals\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)Opengl stuff\Externals\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Users\100655604\Downloads\glfw-3.2.1.bin.WIN32\lib-vc2015;C:\Users\100655604\Downloads\glew-2.1.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Opengl stuff\Externals\SOIL2\lib;$(SolutionDir)Opengl stuff\Externals\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)Opengl stuff\Externals\glew-2.1.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>soil2-debug.lib;opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -125,26 +125,41 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="fileIO.cpp" />
+    <ClCompile Include="ImageLoader.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="GameEngine.cpp" />
-    <ClCompile Include="GLSL_Compiler.cpp" />
+    <ClCompile Include="GLSLCompiler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fileIO.h" />
+    <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="GameEngine.h" />
-    <ClInclude Include="GLSL_Compiler.h" />
+    <ClInclude Include="GLSLCompiler.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\Colour Shading 2.fmsh" />
+    <None Include="Shaders\Colour Shading 2.vtsh" />
     <None Include="Shaders\Colour Shading.fmsh" />
     <None Include="Shaders\Colour Shading.vtsh" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ErrorLog.log" />
+    <Text Include="Logs\imageLoader.log" />
+    <Text Include="Logs\Log.log" />
+    <Text Include="Logs\ShaderLog.log" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

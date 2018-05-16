@@ -1,73 +1,118 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="fileIO">
+      <UniqueIdentifier>{9f39ff42-c8a9-40a6-8322-bdf49be41a24}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Shader Stuff">
+      <UniqueIdentifier>{01e5f29c-5105-45cd-903d-a60172c73d60}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Resource Files\Shaders">
+    <Filter Include="Shader Stuff\Shaders">
       <UniqueIdentifier>{edf9ad2d-106a-4342-9cc1-5ed37761f7df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Logs">
+    <Filter Include="Logs">
       <UniqueIdentifier>{67b5969f-1db3-4aef-b889-2250fcc19df4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main Game">
+      <UniqueIdentifier>{40b0f3f2-f057-4342-a96c-5ae2adc95827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Engine">
+      <UniqueIdentifier>{9763d0a7-dbb3-4c27-babe-360c41b8df6e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Quaternion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLSL_Compiler.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="fileIO.cpp">
+      <Filter>fileIO</Filter>
     </ClCompile>
     <ClCompile Include="Logger.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>fileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="GLSLCompiler.cpp">
+      <Filter>Shader Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngine.cpp">
+      <Filter>Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageLoader.cpp">
+      <Filter>fileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="Quaternion.cpp">
+      <Filter>Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>fileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Main Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Quaternion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GLSL_Compiler.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="fileIO.h">
+      <Filter>fileIO</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h">
-      <Filter>Header Files</Filter>
+      <Filter>fileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="GLSLCompiler.h">
+      <Filter>Shader Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngine.h">
+      <Filter>Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLoader.h">
+      <Filter>fileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h">
+      <Filter>Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>fileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Game Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Colour Shading.vtsh">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Shader Stuff\Shaders</Filter>
     </None>
     <None Include="Shaders\Colour Shading.fmsh">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Shader Stuff\Shaders</Filter>
+    </None>
+    <None Include="Shaders\Colour Shading 2.fmsh">
+      <Filter>Shader Stuff\Shaders</Filter>
+    </None>
+    <None Include="Shaders\Colour Shading 2.vtsh">
+      <Filter>Shader Stuff\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ErrorLog.log">
-      <Filter>Resource Files\Logs</Filter>
+    <Text Include="Logs\imageLoader.log">
+      <Filter>Logs</Filter>
+    </Text>
+    <Text Include="Logs\Log.log">
+      <Filter>Logs</Filter>
+    </Text>
+    <Text Include="Logs\ShaderLog.log">
+      <Filter>Logs</Filter>
     </Text>
   </ItemGroup>
 </Project>
