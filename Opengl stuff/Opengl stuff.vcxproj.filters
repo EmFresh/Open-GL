@@ -1,118 +1,113 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="fileIO">
-      <UniqueIdentifier>{9f39ff42-c8a9-40a6-8322-bdf49be41a24}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shader Stuff">
-      <UniqueIdentifier>{01e5f29c-5105-45cd-903d-a60172c73d60}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shader Stuff\Shaders">
-      <UniqueIdentifier>{edf9ad2d-106a-4342-9cc1-5ed37761f7df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Logs">
-      <UniqueIdentifier>{67b5969f-1db3-4aef-b889-2250fcc19df4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Main Game">
       <UniqueIdentifier>{40b0f3f2-f057-4342-a96c-5ae2adc95827}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game Engine">
-      <UniqueIdentifier>{9763d0a7-dbb3-4c27-babe-360c41b8df6e}</UniqueIdentifier>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{edf9ad2d-106a-4342-9cc1-5ed37761f7df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EmGine">
+      <UniqueIdentifier>{5b5a6f6d-3195-49a8-832e-45f3180a4a14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EmGine\Data Types">
+      <UniqueIdentifier>{80aebc52-3dbf-44f0-b182-365bce3ffa89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EmGine\FileIO">
+      <UniqueIdentifier>{a88fcccd-e840-4975-8615-b6a24ffbb1eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EmGine\Game Engine">
+      <UniqueIdentifier>{44c24700-4309-4bd1-b420-ab7299377043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EmGine\Shader Stuff">
+      <UniqueIdentifier>{2f997118-5e92-4e10-9a39-42ab13a93447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EmGine\Resource Manager">
+      <UniqueIdentifier>{89a4d491-7e4e-4640-baf6-865b39b766a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="fileIO.cpp">
-      <Filter>fileIO</Filter>
-    </ClCompile>
-    <ClCompile Include="Logger.cpp">
-      <Filter>fileIO</Filter>
-    </ClCompile>
-    <ClCompile Include="GLSLCompiler.cpp">
-      <Filter>Shader Stuff</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Game Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix.cpp">
-      <Filter>Game Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngine.cpp">
-      <Filter>Game Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageLoader.cpp">
-      <Filter>fileIO</Filter>
-    </ClCompile>
-    <ClCompile Include="Quaternion.cpp">
-      <Filter>Game Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Game Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>fileIO</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Main Game</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="fileIO.h">
-      <Filter>fileIO</Filter>
-    </ClInclude>
-    <ClInclude Include="Logger.h">
-      <Filter>fileIO</Filter>
-    </ClInclude>
-    <ClInclude Include="GLSLCompiler.h">
-      <Filter>Shader Stuff</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>Game Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Game Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="GameEngine.h">
-      <Filter>Game Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageLoader.h">
-      <Filter>fileIO</Filter>
-    </ClInclude>
-    <ClInclude Include="Quaternion.h">
-      <Filter>Game Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Game Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>fileIO</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Game Engine</Filter>
-    </ClInclude>
+    <ClCompile Include="GameEmGine.cpp">
+      <Filter>Main Game</Filter>
+    </ClCompile>
+    <ClCompile Include="fileIO.cpp">
+      <Filter>EmGine</Filter>
+    </ClCompile>
+    <ClCompile Include="GLSLCompiler.cpp">
+      <Filter>EmGine</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageLoader.cpp">
+      <Filter>EmGine</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>EmGine</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>EmGine</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>EmGine</Filter>
+    </ClCompile>
+    <ClCompile Include="Quaternion.cpp">
+      <Filter>EmGine</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>EmGine</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>EmGine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Colour Shading.vtsh">
-      <Filter>Shader Stuff\Shaders</Filter>
+      <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\Colour Shading.fmsh">
-      <Filter>Shader Stuff\Shaders</Filter>
+      <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\Colour Shading 2.fmsh">
-      <Filter>Shader Stuff\Shaders</Filter>
+      <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\Colour Shading 2.vtsh">
-      <Filter>Shader Stuff\Shaders</Filter>
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Logs\imageLoader.log">
-      <Filter>Logs</Filter>
-    </Text>
-    <Text Include="Logs\Log.log">
-      <Filter>Logs</Filter>
-    </Text>
-    <Text Include="Logs\ShaderLog.log">
-      <Filter>Logs</Filter>
-    </Text>
+    <ClInclude Include="GameEmGine.h">
+      <Filter>Main Game</Filter>
+    </ClInclude>
+    <ClInclude Include="fileIO.h">
+      <Filter>EmGine</Filter>
+    </ClInclude>
+    <ClInclude Include="GLSLCompiler.h">
+      <Filter>EmGine</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLoader.h">
+      <Filter>EmGine</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>EmGine</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>EmGine</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>EmGine</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h">
+      <Filter>EmGine</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>EmGine</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>EmGine</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>EmGine</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,2 +1,6 @@
 .vs/
 Opengl stuff/Debug/
+GameEmGine/include/Debug/GameEmGine.idb
+GameEmGine/include/Debug/
+*.tlog
+*.idb
