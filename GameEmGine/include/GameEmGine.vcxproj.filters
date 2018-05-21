@@ -19,9 +19,6 @@
     <ClInclude Include="Model.h">
       <Filter>EmGine\Game Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Quaternion.h">
-      <Filter>EmGine\Data Types</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>EmGine\Resource Manager</Filter>
     </ClInclude>
@@ -33,6 +30,21 @@
     </ClInclude>
     <ClInclude Include="GameEmGine.h">
       <Filter>EmGine\Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowCreator.h">
+      <Filter>EmGine\Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Quat.h">
+      <Filter>EmGine\Data Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera3D.h">
+      <Filter>EmGine\Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera2D.h">
+      <Filter>EmGine\Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="StructInfo.h">
+      <Filter>EmGine\Data Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -54,9 +66,6 @@
     <ClCompile Include="Model.cpp">
       <Filter>EmGine\Game Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Quaternion.cpp">
-      <Filter>EmGine\Data Types</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>EmGine\Resource Manager</Filter>
     </ClCompile>
@@ -64,6 +73,18 @@
       <Filter>EmGine\Game Engine</Filter>
     </ClCompile>
     <ClCompile Include="GameEmGine.cpp">
+      <Filter>EmGine\Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowCreator.cpp">
+      <Filter>EmGine\Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Quat.cpp">
+      <Filter>EmGine\Data Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera3D.cpp">
+      <Filter>EmGine\Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera2D.cpp">
       <Filter>EmGine\Game Engine</Filter>
     </ClCompile>
   </ItemGroup>

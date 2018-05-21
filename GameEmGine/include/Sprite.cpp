@@ -22,17 +22,19 @@ Sprite::Sprite(VboInfo2D info, const char * path) :VboInfo2D(info)
 Sprite::~Sprite()
 {
 	if(_vboID)
-	{
 		glDeleteBuffers(1, &_vboID);
-	}
+	
 }
 
 void Sprite::init()
-{		 
+{
 	if(!_vboID)
 		glGenBuffers(1, &_vboID);
 
-
+	int w, h;
+	glfwGetFramebufferSize(glfwGetCurrentContext(),&w,&h);
+	size.width /= w;
+	size.height /= h;
 	//Left triangle
 	//bottom left
 	_vertData[0].setCoord2D(position.x - size.width / 2, position.y - size.height / 2);
@@ -89,11 +91,11 @@ void Sprite::draw()
 
 	glActiveTexture(GL_TEXTURE0);
 	//printf("ID: %d", _texture.id);
-	//if(_texture.id != _bound)
-	//{
+	if(_texture.id != _bound)
+	{
 		glBindTexture(GL_TEXTURE_2D, _texture.id);
-	//	_bound = _texture.id;
-	//}
+		_bound = _texture.id;
+	}
 	glUniform1i(_textureShader->getUniformLocation("texSampler"), 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
@@ -122,32 +124,15 @@ void Sprite::setPosition(float x, float y)
 {
 	position = {x,y};
 
-	if(!_vboID)
-		glGenBuffers(1, &_vboID);
+	init();
+}
 
-	//Left triangle
-	//bottom left
-	_vertData[0].setCoord2D(position.x - size.width / 2, position.y - size.height / 2);
+void Sprite::setSize(float width, float height)
+{
+	
+	size = {width,height};
 
-	//top left
-	_vertData[1].setCoord2D(_vertData[0].coord[0], position.y + size.height / 2);
-
-	//top right
-	_vertData[2].setCoord2D(_vertData[1].coord[0] + size.width, _vertData[1].coord[1]);
-
-	//Right triangle 	
-	//top right
-	_vertData[3].setCoord2D(_vertData[2].coord[0], _vertData[2].coord[1]);
-
-	//bottom right
-	_vertData[4].setCoord2D(_vertData[3].coord[0], _vertData[0].coord[1]);
-
-	//bottom left
-	_vertData[5].setCoord2D(_vertData[0].coord[0], _vertData[0].coord[1]);
-
-	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(_vertData), _vertData, GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	init();
 }
 
 void Sprite::setRotation(float deg)
@@ -193,3 +178,8 @@ void Sprite::setRotation(float deg)
 
 void Sprite::rotateBy(float deg)
 {}
+
+Size2D & Sprite::getSize()
+{
+	return size;
+}

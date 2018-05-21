@@ -8,9 +8,11 @@ out vec4 fragColour;
 out vec3 fragPos;
 out vec2 fragUV;
 
+uniform mat4 camera;
+
 void main()
 {
-	gl_Position.xyz = vertPos;
+	gl_Position.xyz = (camera * vec4(vertPos, 1.0)).xyz;
 	gl_Position.w=1.0;
 
 	fragColour = vertCol;

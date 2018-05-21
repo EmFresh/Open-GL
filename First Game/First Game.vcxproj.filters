@@ -7,10 +7,38 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{a1323e0e-194d-4e3f-8e04-449a9d289ef9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Logs">
+      <UniqueIdentifier>{baffc3e5-45fb-4afd-a53d-0d3844a665bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Main Game</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Colour Shading 2.fmsh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\Colour Shading 2.vtsh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\Colour Shading.fmsh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\Colour Shading.vtsh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Logs\New Log">
+      <Filter>Logs</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Logs\imageLoader.log">
+      <Filter>Logs</Filter>
+    </Text>
+    <Text Include="Logs\ShaderLog.log">
+      <Filter>Logs</Filter>
+    </Text>
   </ItemGroup>
 </Project>

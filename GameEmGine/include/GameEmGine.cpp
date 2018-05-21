@@ -1,32 +1,44 @@
 #include "GameEmGine.h"
 
 void(*GameEmGine::_compileShaders)(), (*GameEmGine::_render)(), (*GameEmGine::_gameLoop)(), (*GameEmGine::_keyUp)(int, int), (*GameEmGine::_keyDown)(int, int);
-GLFWwindow *GameEmGine::_window;
-//GLFWmonitor *GameEngine::_monitor;
+Camera3D *GameEmGine::_mainCamera , **GameEmGine::_cameras;
+GLSLCompiler *GameEmGine::_cameraShader;
+WindowCreator *GameEmGine::_window;	//must be init in the constructor
 Colour GameEmGine::_colour {123,123,123};
 int GameEmGine::_numSprites;
 std::map<int, Sprite *>* GameEmGine::_spriteArr = new std::map<int, Sprite *>;
 
-GameEmGine::GameEmGine(std::string name, int monitor, int width, int height)
+GameEmGine::GameEmGine()
+{}
+
+GameEmGine::GameEmGine(std::string name, int monitor, int width, int height, int x, int y, bool fullScreen, bool visable)
 {
-	glfwInit();			
-
-	glfwDefaultWindowHints();
-	//glfwWindowHint(GLFW_RESIZABLE, true);
-	int monCount;
-	glfwGetMonitors(&monCount);
-	glViewport(0, 0, width, height);
-	_window = glfwCreateWindow(width, height, (_title = name).c_str(), nullptr, nullptr);
-	glfwMakeContextCurrent(_window); //gives opengl the window it renders to  
-	glfwSetFramebufferSizeCallback(_window, changeViewport);
-	glfwSetKeyCallback(_window, keyUpdate);
-
-	_fpsLimit = 60;
+	createWindow(name, width, height, x, y, monitor, fullScreen, visable);
 }
 
 GameEmGine::~GameEmGine()
 {
 	glfwTerminate();
+}
+
+void GameEmGine::createWindow(std::string name, int width, int height, int x, int y, int monitor, bool fullScreen, bool visable)
+{
+	glfwInit();
+	//_window = new WindowCreator();
+
+	printf("Try to create the window\n");
+	_window = new WindowCreator(name, {(float)width,(float)height}, {(float)x,(float)y}, monitor, fullScreen, visable);
+	glfwSetFramebufferSizeCallback(_window->getWindow(), changeViewport);
+	glfwSetKeyCallback(_window->getWindow(), keyUpdate);
+	
+	_mainCamera = new Camera3D({(float)width,(float)height});
+
+	_cameraShader = new GLSLCompiler;
+	_cameraShader->compileShaders("Shaders/Colour Shading.vtsh", "Shaders/Colour Shading.fmsh");
+	_cameraShader->linkShaders();
+
+	printf("created the window\n");
+	_fpsLimit = 30;
 }
 
 void GameEmGine::run()
@@ -35,20 +47,21 @@ void GameEmGine::run()
 	//vsync
 	glfwSwapInterval(1);
 	glEnable(GL_DEPTH_TEST);
-	glClearColor((float)_colour.r * 255, (float)_colour.g * 255, (float)_colour.b * 255, (float)_colour.a * 255);//BG colour
+	glClearColor((float)_colour.r / 255, (float)_colour.g / 255, (float)_colour.b / 255, (float)_colour.a / 255);//BG colour
 
-	while(!glfwWindowShouldClose(_window))
+	while(!glfwWindowShouldClose(_window->getWindow()))
 	{
 		glDepthFunc(GL_LEQUAL);
 		update();
-		if(0)
+		glfwSwapBuffers(_window->getWindow());
+		if(false)
 		{
 			calculateFPS();
 			char str[20];
 			sprintf_s(str, "fps: %.2f", _fps);
-			glfwSetWindowTitle(_window, (_title + "--> " + str).c_str());
+			glfwSetWindowTitle(_window->getWindow(), (_window->getTitle() + "--> " + str).c_str());
 		}
-		//fpsLimiter();
+	//	fpsLimiter();
 	}
 	glfwTerminate();
 }
@@ -66,6 +79,11 @@ void GameEmGine::fpsLimit(short limit)
 void GameEmGine::vsync(bool enable)
 {
 	glfwSwapInterval(enable);
+}
+
+WindowCreator* GameEmGine::getWindow()
+{
+	return _window;
 }
 
 void GameEmGine::calculateFPS()
@@ -91,17 +109,17 @@ void GameEmGine::fpsLimiter()
 {
 	if(_fps > _fpsLimit)
 	{
-		int delay = _fpsLimit - _fps;
-		float	currentTime = glfwGetTime();
+		int delay = _fps-_fpsLimit ;
+		float	currentTime = glfwGetTime(),now;
 		printf("delayed\n");
-		while(glfwGetTime() - currentTime < delay);
+		while(((now = glfwGetTime()) - currentTime) < delay);
 
 	}
 }
 
 void GameEmGine::keyUpdate(GLFWwindow *, int key, int scancode, int action, int mods)
 {
-	if(action == GLFW_RELEASE) //more of a stroke since release is only called if a key is pressed
+	if(action == GLFW_RELEASE) //more of a stroke since release is only called if a key is pressed then released
 	{
 		if(_keyUp != nullptr)
 			_keyUp(key, mods);
@@ -115,15 +133,11 @@ void GameEmGine::keyUpdate(GLFWwindow *, int key, int scancode, int action, int 
 void GameEmGine::keyPressed(void key(int key, int mod))
 {
 	_keyDown = key;
-	//glutKeyboardFunc((void(*)(unsigned char, int, int))key);//Letters only
-	//glutSpecialFunc(key);//for non-Letter characters (i.e. "left arrow") 
 }
 
 void GameEmGine::keyReleased(void key(int key, int mod))
 {
 	_keyUp = key;
-	//glutKeyboardUpFunc((void(*)(unsigned char, int, int))key);//Letters only
-	//glutSpecialUpFunc(key);//for non-Letter characters (i.e. "left arrow")
 }
 
 void GameEmGine::renderUpdate(void update())
@@ -148,20 +162,22 @@ void GameEmGine::backgroundColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 
 int GameEmGine::getWindowWidth()
 {
-	int width;
-	glfwGetWindowSize(_window, &width, nullptr);
-	return width;
+	return _window->getScreenWidth();
 }
 
 int GameEmGine::getWindowHeight()
 {
-	int height;
-	glfwGetWindowSize(_window, nullptr, &height);
-	return height;
+	return _window->getScreenHeight();
+}
+
+void GameEmGine::moveCameraBy(Coord3D pos)
+{
+	_mainCamera->moveBy(pos);
 }
 
 void GameEmGine::addSprite(Sprite * sprite)
 {
+	
 	if(!_tmpSpriteArr->insert({_tmpNumSprites++,sprite}).second)
 		_tmpNumSprites--,
 		printf("This sprite is already her!!\n\n");
@@ -186,9 +202,21 @@ void GameEmGine::removeSprite(Sprite * sprite)
 			printf("This sprite has been removed!!\n\n");
 }
 
+void GameEmGine::addCamera(Camera3D *cam)
+{
+	Camera3D **tmp = new Camera3D*[++_numCameras];
+	memcpy(tmp, _cameras,sizeof(Camera3D*)*(_numCameras-1));
+	tmp[_numCameras - 1] = cam;
+	_cameras = tmp;
+}
+
 void GameEmGine::update()
 {
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glClearDepth(1.0);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);	 
+	
+	_mainCamera->update();	
+
 	if(_render != nullptr)
 		_render();
 	for(int a = 0; a < _spriteArr->size(); a++)
@@ -196,7 +224,12 @@ void GameEmGine::update()
 		//printf("Sprite #%d\n", a + 1);
 		_spriteArr->find(a)->second->draw();
 	}
-	glfwSwapBuffers(_window);
+//	_cameraShader->enable();
+	glUniformMatrix4fv(_cameraShader->getUniformLocation("camera"), 1, GL_FALSE, &(_mainCamera->getCameraMatrix()[0][0]));
+//	_cameraShader->disable();
+
+	
+
 	glfwPollEvents();//updates the event handelers
 	if(_gameLoop != nullptr)
 		_gameLoop();
@@ -208,7 +241,9 @@ void GameEmGine::changeViewport(GLFWwindow *, int w, int h)
 	//printf("Width : %d\n"
 	//	   "Height: %d\n\n", w, h);
 
+	//_window->getScreenWidth(); //just for updating window width & height
+	
 	glViewport(0, 0, w, h);
 	//glFrustum(0, w, 0, h, -h, h);//eye view
-	//glOrtho(-1, 1, -1, 1, -2, 10);//box view
+	//glOrtho(0, 1, 0, 1, 0, 1);//box view
 }

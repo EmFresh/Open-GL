@@ -165,6 +165,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="Camera3D.h" />
     <ClInclude Include="fileIO.h" />
     <ClInclude Include="GameEmGine.h" />
     <ClInclude Include="GLSLCompiler.h" />
@@ -172,12 +174,16 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Model.h" />
-    <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="Quat.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="StructInfo.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="WindowCreator.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera2D.cpp" />
+    <ClCompile Include="Camera3D.cpp" />
     <ClCompile Include="fileIO.cpp" />
     <ClCompile Include="GameEmGine.cpp" />
     <ClCompile Include="GLSLCompiler.cpp" />
@@ -185,9 +191,10 @@
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Model.cpp" />
-    <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="Quat.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="WindowCreator.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
