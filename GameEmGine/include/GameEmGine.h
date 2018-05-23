@@ -8,6 +8,7 @@
 #include "GLSLCompiler.h"
 #include "WindowCreator.h"
 #include "Camera2D.h"
+#include "SpriteBatch.h"
 //will get joystic input latter :>
 
 class GameEmGine
@@ -58,11 +59,11 @@ public:
 	/*
 	Gets window width in pixles
 	*/
-	int getWindowWidth();
+	static int getWindowWidth();
    /*
    Gets window height in pixles
    */
-	int getWindowHeight();
+	static int getWindowHeight();
 
 
 	void moveCameraBy(Coord3D pos);
@@ -84,7 +85,7 @@ public:
 	WindowCreator * getWindow();
 
 private:
-
+	void shaderInit();
 	void calculateFPS();
 	void fpsLimiter();
 
@@ -98,7 +99,8 @@ private:
 	static int _numSprites;
 	static Camera3D *_mainCamera, **_cameras;
 	static GLSLCompiler *_cameraShader;
-	std::map<int, Sprite *>*_tmpSpriteArr = new std::map<int, Sprite *>;
+	//std::map<int, Sprite *>*_tmpSpriteArr = new std::map<int, Sprite *>;
+	static SpriteBatch* _spriteBatch;
 	int _tmpNumSprites, _numCameras;
 	float _fps;
 	short _fpsLimit;

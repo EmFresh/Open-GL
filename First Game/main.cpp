@@ -235,7 +235,7 @@ void update()
 	//	printf("y: %f\n", y);
 	//}
 
-	game.moveCameraBy({0,0,0});
+	//game.moveCameraBy({5,-5,0});
 
 }
 
@@ -286,12 +286,12 @@ void main()
 
 
 
-	Sprite
-		*sprite  = new Sprite({               {0,0}                 , {(float)game.getWindowWidth() / 2,(float)game.getWindowHeight()}}, "Assets/bleach.jpg"),
-		*sprite2 = new Sprite({{(float)game.getWindowWidth() / 2, 0}, {(float)game.getWindowWidth() / 2,(float)game.getWindowHeight()}}, "Assets/bleach.jpg");
-
-	game.addSprite(sprite);
-	game.addSprite(sprite2);
+	//Sprite
+	//	*sprite = new Sprite({{0,0}                 , {(float)game.getWindowWidth() / 2,(float)game.getWindowHeight()}}, "Assets/bleach.jpg"),
+	//	*sprite2 = new Sprite({{(float)game.getWindowWidth() / 2, 0}, {(float)game.getWindowWidth() / 2,(float)game.getWindowHeight()}}, "Assets/bleach.jpg");
+	//
+	//game.addSprite(sprite);
+	//game.addSprite(sprite2);
 
 	//for(int a = 0; a < 998; a++)
 	//	game.addSprite(new Sprite({{-.5,0}, {1,2}}, "Assets/RandomButton.png"));

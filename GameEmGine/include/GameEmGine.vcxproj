@@ -177,6 +177,7 @@
     <ClInclude Include="Quat.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpriteBatch.h" />
     <ClInclude Include="StructInfo.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="WindowCreator.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Quat.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SpriteBatch.cpp" />
     <ClCompile Include="WindowCreator.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

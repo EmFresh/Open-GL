@@ -46,6 +46,9 @@
     <ClInclude Include="StructInfo.h">
       <Filter>EmGine\Data Types</Filter>
     </ClInclude>
+    <ClInclude Include="SpriteBatch.h">
+      <Filter>EmGine\Game Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fileIO.cpp">
@@ -85,6 +88,9 @@
       <Filter>EmGine\Game Engine</Filter>
     </ClCompile>
     <ClCompile Include="Camera2D.cpp">
+      <Filter>EmGine\Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteBatch.cpp">
       <Filter>EmGine\Game Engine</Filter>
     </ClCompile>
   </ItemGroup>

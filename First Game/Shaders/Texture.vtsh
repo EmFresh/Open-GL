@@ -4,18 +4,19 @@ layout (location  = 0) in vec3 vertPos;
 layout (location  = 1) in vec4 vertCol; 
 layout (location  = 2) in vec2 vertUV;
 
-out vec4 fragColour;
 out vec3 fragPos;
+out vec4 fragColour;
 out vec2 fragUV;
 
 uniform mat4 camera;
+
 
 void main()
 {
 	gl_Position.xyz = (camera * vec4(vertPos, 1.0)).xyz;
 	gl_Position.w=1.0;
 
-	fragColour = vertCol;
 	fragPos = vertPos;
+	fragColour = vertCol;
 	fragUV =  vec2(vertUV.x, 1 - vertUV.y); 
 }

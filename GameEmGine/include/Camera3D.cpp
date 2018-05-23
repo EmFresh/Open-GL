@@ -2,9 +2,9 @@
 
 
 
-Camera3D::Camera3D(Size2D size) :_orthoMat(1.0), _scale(1), _cameraUpdate (true),_position(new Coord3D)
+Camera3D::Camera3D(Size2D size) :_orthoMat(1.0), _scale(1), _cameraUpdate(true), _position(new Coord3D)
 {
-	_position->x=-.5;
+	_position = new Coord3D{-.25,-.5,0};
 	init(size);
 }
 
@@ -18,7 +18,7 @@ void Camera3D::init(Size2D size)
 	size.width /= w;
 	size.height /= h;
 	*_size = size;
-	
+
 	_orthoMat = glm::ortho(0.f, _size->width, 0.f, _size->height);
 }
 
@@ -34,20 +34,25 @@ bool Camera3D::update()
 	return false;
 }
 
-void Camera3D::setPosition(const Coord3D position)
+void Camera3D::setPosition(Coord3D position)
 {
-	int w, h,d;
+	int w, h, d;
 	glfwGetFramebufferSize(glfwGetCurrentContext(), &w, &h);
-	
+
+	position.x /= w;
+	position.y /= h;
 	*_position = position;
-	_position->x /= w;
-	_position->y /= h;
 	_cameraUpdate = true;
 }
 
-void  Camera3D::moveBy(const Coord3D position)
+void  Camera3D::moveBy(Coord3D position)
 {
+	int w, h, d;
+	glfwGetFramebufferSize(glfwGetCurrentContext(), &w, &h);
+	position.x /= w;
+	position.y /= h;
 	*_position += position;
+
 	_cameraUpdate = true;
 }
 

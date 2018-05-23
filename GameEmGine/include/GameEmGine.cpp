@@ -1,12 +1,13 @@
 #include "GameEmGine.h"
 
 void(*GameEmGine::_compileShaders)(), (*GameEmGine::_render)(), (*GameEmGine::_gameLoop)(), (*GameEmGine::_keyUp)(int, int), (*GameEmGine::_keyDown)(int, int);
-Camera3D *GameEmGine::_mainCamera , **GameEmGine::_cameras;
+Camera3D *GameEmGine::_mainCamera, **GameEmGine::_cameras;
 GLSLCompiler *GameEmGine::_cameraShader;
 WindowCreator *GameEmGine::_window;	//must be init in the constructor
 Colour GameEmGine::_colour {123,123,123};
 int GameEmGine::_numSprites;
-std::map<int, Sprite *>* GameEmGine::_spriteArr = new std::map<int, Sprite *>;
+SpriteBatch *GameEmGine::_spriteBatch;
+//std::map<int, Sprite *>* GameEmGine::_spriteArr = new std::map<int, Sprite *>;
 
 GameEmGine::GameEmGine()
 {}
@@ -30,12 +31,13 @@ void GameEmGine::createWindow(std::string name, int width, int height, int x, in
 	_window = new WindowCreator(name, {(float)width,(float)height}, {(float)x,(float)y}, monitor, fullScreen, visable);
 	glfwSetFramebufferSizeCallback(_window->getWindow(), changeViewport);
 	glfwSetKeyCallback(_window->getWindow(), keyUpdate);
-	
+
 	_mainCamera = new Camera3D({(float)width,(float)height});
 
-	_cameraShader = new GLSLCompiler;
-	_cameraShader->compileShaders("Shaders/Colour Shading.vtsh", "Shaders/Colour Shading.fmsh");
-	_cameraShader->linkShaders();
+	shaderInit();
+
+	_spriteBatch = new SpriteBatch;
+	_spriteBatch->init();
 
 	printf("created the window\n");
 	_fpsLimit = 30;
@@ -86,6 +88,13 @@ WindowCreator* GameEmGine::getWindow()
 	return _window;
 }
 
+void GameEmGine::shaderInit()
+{
+	_cameraShader = new GLSLCompiler;
+	_cameraShader->compileShaders("Shaders/Texture.vtsh", "Shaders/Texture.fmsh");
+	_cameraShader->linkShaders();
+}
+
 void GameEmGine::calculateFPS()
 {
 	static const int SAMPLE = 15;
@@ -109,11 +118,10 @@ void GameEmGine::fpsLimiter()
 {
 	if(_fps > _fpsLimit)
 	{
-		int delay = _fps-_fpsLimit ;
-		float	currentTime = glfwGetTime(),now;
+		int delay = _fps - _fpsLimit;
+		float	currentTime = glfwGetTime(), now;
 		printf("delayed\n");
 		while(((now = glfwGetTime()) - currentTime) < delay);
-
 	}
 }
 
@@ -177,35 +185,36 @@ void GameEmGine::moveCameraBy(Coord3D pos)
 
 void GameEmGine::addSprite(Sprite * sprite)
 {
-	
-	if(!_tmpSpriteArr->insert({_tmpNumSprites++,sprite}).second)
-		_tmpNumSprites--,
-		printf("This sprite is already her!!\n\n");
 
-	_spriteArr = _tmpSpriteArr;
-	_numSprites = _tmpNumSprites;
+//	if(!_tmpSpriteArr->insert({_tmpNumSprites++,sprite}).second)
+//		_tmpNumSprites--,
+//		printf("This sprite is already her!!\n\n");
+//
+//	_spriteArr = _tmpSpriteArr;
+//	_numSprites = _tmpNumSprites;
 }
 
 void GameEmGine::removeSprite(int index)
 {
-	if(_tmpSpriteArr->erase(index))
-		_tmpNumSprites--,
-		printf("This sprite has been removed!!\n\n");
+//	if(_tmpSpriteArr->erase(index))
+//		_tmpNumSprites--,
+//		printf("This sprite has been removed!!\n\n");
 }
 
 void GameEmGine::removeSprite(Sprite * sprite)
 {
-	for(int a = 0; a < _tmpNumSprites; a++)
-		if(_tmpSpriteArr[0][a] == sprite)
-			_tmpSpriteArr->erase(a),
-			_tmpNumSprites--,
-			printf("This sprite has been removed!!\n\n");
+//	for(int a = 0; a < _tmpNumSprites; a++)
+//		if(_tmpSpriteArr[0][a] == sprite)
+//			_tmpSpriteArr->erase(a),
+//			_tmpNumSprites--,
+//			printf("This sprite has been removed!!\n\n");
 }
 
 void GameEmGine::addCamera(Camera3D *cam)
 {
 	Camera3D **tmp = new Camera3D*[++_numCameras];
-	memcpy(tmp, _cameras,sizeof(Camera3D*)*(_numCameras-1));
+	memcpy(tmp, _cameras, sizeof(Camera3D*)*(_numCameras - 1));
+	delete _cameras;  //may cause error
 	tmp[_numCameras - 1] = cam;
 	_cameras = tmp;
 }
@@ -213,23 +222,27 @@ void GameEmGine::addCamera(Camera3D *cam)
 void GameEmGine::update()
 {
 	glClearDepth(1.0);
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);	 
-	
-	_mainCamera->update();	
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
+	_mainCamera->update();
 	if(_render != nullptr)
 		_render();
-	for(int a = 0; a < _spriteArr->size(); a++)
-	{
-		//printf("Sprite #%d\n", a + 1);
-		_spriteArr->find(a)->second->draw();
-	}
+	glActiveTexture(GL_TEXTURE0);
+	//for(int a = 0; a < _spriteArr->size(); a++)
+	//{
+	//	//printf("Sprite #%d\n", a + 1);
+	//	_spriteArr->find(a)->second->draw();
+	//}
 //	_cameraShader->enable();
 	glUniformMatrix4fv(_cameraShader->getUniformLocation("camera"), 1, GL_FALSE, &(_mainCamera->getCameraMatrix()[0][0]));
 //	_cameraShader->disable();
 
-	
+	VboInfo2D info{{0,0},{(float)getWindowWidth() / 2,(float)getWindowHeight()}};
+	_spriteBatch->begin();
+	_spriteBatch->draw(&info, 0, ResourceManager::getTexture2D("Assets/bleach.jpg").id, new Colour);
+	_spriteBatch->end();
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glfwPollEvents();//updates the event handelers
 	if(_gameLoop != nullptr)
 		_gameLoop();
@@ -242,7 +255,7 @@ void GameEmGine::changeViewport(GLFWwindow *, int w, int h)
 	//	   "Height: %d\n\n", w, h);
 
 	//_window->getScreenWidth(); //just for updating window width & height
-	
+
 	glViewport(0, 0, w, h);
 	//glFrustum(0, w, 0, h, -h, h);//eye view
 	//glOrtho(0, 1, 0, 1, 0, 1);//box view

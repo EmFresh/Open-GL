@@ -1,0 +1,14 @@
+#version 410
+
+layout (location  = 0) in vec3 vertPos; 
+
+uniform mat4 camera;
+
+out vec3 fragPos;
+void main()
+{
+	gl_Position.xyz = (camera * vec4(vertPos, 1.0)).xyz;
+	gl_Position.w=1.0;
+	
+	fragPos = vertPos;	
+}

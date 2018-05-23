@@ -23,14 +23,20 @@
     <None Include="Shaders\Colour Shading 2.vtsh">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\Colour Shading.fmsh">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\Colour Shading.vtsh">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Logs\New Log">
       <Filter>Logs</Filter>
+    </None>
+    <None Include="Shaders\Camera.fmsh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\Camera.vtsh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\Texture.fmsh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\Texture.vtsh">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -35,6 +35,8 @@ void Sprite::init()
 	glfwGetFramebufferSize(glfwGetCurrentContext(),&w,&h);
 	size.width /= w;
 	size.height /= h;
+	position.x /= w;
+	position.y /= h;
 	//Left triangle
 	//bottom left
 	_vertData[0].setCoord2D(position.x - size.width / 2, position.y - size.height / 2);
@@ -73,10 +75,10 @@ void Sprite::init(const char * path)
 	if(!initial)
 	{
 		printf("using texture shader\n");
-		_textureShader->compileShaders("Shaders/Colour Shading.vtsh", "Shaders/Colour Shading.fmsh");
+		_textureShader->compileShaders("Shaders/Texture.vtsh", "Shaders/Texture.fmsh");
 		_textureShader->linkShaders();
-		for(int a = 0; a < 6; a++)
-			_vertData[a].setColour(255, 255, 255);
+		//for(int a = 0; a < 6; a++)
+		//	_vertData[a].setColour(255, 255, 255);
 
 	}
 	initial = true;
@@ -101,6 +103,8 @@ void Sprite::draw()
 	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
 
 	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 
 	//vertex atributes
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, coord));
@@ -113,6 +117,8 @@ void Sprite::draw()
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
