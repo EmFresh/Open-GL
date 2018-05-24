@@ -50,7 +50,7 @@ public:
 private:
 	void createRenderBatches();
 	void createVertArrayObject();
-	void addGlyph(Glyph);
+	void addGlyph(Glyph*);
 	void addRenderBatch(RenderBatch);
 	void sortGlyphs();
 
@@ -60,7 +60,7 @@ private:
 	static int byTextureSort(const void* a, const void *b);
 
 	GLuint _vboID, _vaoID;
-	Glyph* _glyphs;
+	Glyph** _glyphs;
 	RenderBatch* _renderBatches;
 	GlyphSort _sortType;
 	short _numGlyphs,_numRenderBatches;

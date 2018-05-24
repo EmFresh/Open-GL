@@ -235,8 +235,15 @@ void update()
 	//	printf("y: %f\n", y);
 	//}
 
-	//game.moveCameraBy({5,-5,0});
+	if(m_up)
+		game.moveCameraBy({0,5,0});
+	else if(m_down)
+		game.moveCameraBy({0,-5,0});
 
+	if(m_left)
+		game.moveCameraBy({-5,0,0});
+	else if(m_right)
+		game.moveCameraBy({5,0,0});
 }
 
 

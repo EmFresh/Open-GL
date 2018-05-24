@@ -56,7 +56,7 @@ void GameEmGine::run()
 		glDepthFunc(GL_LEQUAL);
 		update();
 		glfwSwapBuffers(_window->getWindow());
-		if(false)
+		if(true)
 		{
 			calculateFPS();
 			char str[20];
@@ -227,23 +227,25 @@ void GameEmGine::update()
 	_mainCamera->update();
 	if(_render != nullptr)
 		_render();
-	glActiveTexture(GL_TEXTURE0);
-	//for(int a = 0; a < _spriteArr->size(); a++)
-	//{
-	//	//printf("Sprite #%d\n", a + 1);
-	//	_spriteArr->find(a)->second->draw();
-	//}
-//	_cameraShader->enable();
+	//glActiveTexture(GL_TEXTURE0);
+	_cameraShader->enable();
 	glUniformMatrix4fv(_cameraShader->getUniformLocation("camera"), 1, GL_FALSE, &(_mainCamera->getCameraMatrix()[0][0]));
 //	_cameraShader->disable();
 
-	VboInfo2D info{{0,0},{(float)getWindowWidth() / 2,(float)getWindowHeight()}};
+	VboInfo2D info {{0,0},{(float)getWindowWidth() / 2,(float)getWindowHeight()}},
+		info2 {{(float)getWindowWidth() / 2,0}, {(float)getWindowWidth() / 2,(float)getWindowHeight()}};
+	static Texture2D tex = ResourceManager::getTexture2D("Assets/bleach.jpg");
 	_spriteBatch->begin();
-	_spriteBatch->draw(&info, 0, ResourceManager::getTexture2D("Assets/bleach.jpg").id, new Colour);
+	for(int a = 0; a < 1000; a++)
+	{
+		_spriteBatch->draw(&info, 0, tex.id, new Colour);
+		_spriteBatch->draw(&info2, 0,tex.id, new Colour);
+	}
 	_spriteBatch->end();
+	_spriteBatch->render();
 
-	glBindTexture(GL_TEXTURE_2D, 0);
 	glfwPollEvents();//updates the event handelers
+
 	if(_gameLoop != nullptr)
 		_gameLoop();
 }

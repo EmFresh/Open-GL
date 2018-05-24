@@ -4,7 +4,7 @@
 
 Camera3D::Camera3D(Size2D size) :_orthoMat(1.0), _scale(1), _cameraUpdate(true), _position(new Coord3D)
 {
-	_position = new Coord3D{-.25,-.5,0};
+	//_position = new Coord3D{-.25,-.5,0};
 	init(size);
 }
 
