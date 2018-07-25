@@ -1,5 +1,7 @@
 #include <GameEmGine.h>
+#include <AudioPlayer.h>
 #include <vector>
+
 
 
 using namespace std;
@@ -9,7 +11,7 @@ bool m_left = 0, m_right = 0, m_up = 0, m_down = 0;
 
 float width = 250, height = 250;
 //static Quat points[13];
-GameEmGine game("The Real Game", 0, 1000, 800, 0, 0, false);
+GameEmGine game("The Real Game", 1000, 800, 0, 0, 0, false);
 GLSLCompiler colourProgram, colourProgram2;
 Logger tlog = Logger("New Log:>");
 
@@ -94,7 +96,7 @@ void keyInputPressed(int key, int mod)
 	m_down = (key == GLFW_KEY_DOWN ? true : m_down);
 
 
-//	printf("key PRESED code: %d\n\n", key);
+	printf("key PRESED code: %d\n\n", key);
 }
 
 void keyInputReleased(int key, int mod)
@@ -104,27 +106,6 @@ void keyInputReleased(int key, int mod)
 	m_right = (key == GLFW_KEY_RIGHT ? false : m_right);
 	m_up = (key == GLFW_KEY_UP ? false : m_up);
 	m_down = (key == GLFW_KEY_DOWN ? false : m_down);
-
-	//if(key == GLFW_KEY_R)
-	//{
-	//	Size winSize = {game.getWindowWidth(),	game.getWindowHeight()};
-	//	//front
-	//	points[0] = {0, (height / winSize.colum),0};  //top
-	//	points[1] = {-(width / winSize.row), -(height / winSize.colum), 0 - (width / winSize.row)};//bottom left
-	//	points[2] = {(width / winSize.row), -(height / winSize.colum), 0 - (width / winSize.row)}; //bottom right
-	//																									 //left
-	//	points[3] = points[0];
-	//	points[4] = {-(width / winSize.row), -(height / winSize.colum), (width / winSize.row)};
-	//	points[5] = points[1];
-	//	//back
-	//	points[6] = points[0];
-	//	points[7] = {(width / winSize.row), -(height / winSize.colum),  (width / winSize.row)};
-	//	points[8] = points[4];
-	//	//right
-	//	points[9] = points[0];
-	//	points[10] = points[2];
-	//	points[11] = points[7];
-	//}
 
 	if(key == GLFW_KEY_F)
 	{
@@ -236,9 +217,9 @@ void update()
 	//}
 
 	if(m_up)
-		game.moveCameraBy({0,5,0});
+		game.moveCameraBy({0,0,5});
 	else if(m_down)
-		game.moveCameraBy({0,-5,0});
+		game.moveCameraBy({0,0,-5});
 
 	if(m_left)
 		game.moveCameraBy({-5,0,0});
@@ -259,7 +240,7 @@ void render()
 
 	//sprite.setRotation(45);
 
-	glUniform1f(colourProgram.getUniformLocation("tm"), time);
+	//glUniform1f(colourProgram.getUniformLocation("tm"), time);
 
 	////colourProgram.enable();
 	//sprite->draw();
@@ -269,7 +250,7 @@ void render()
 	//sprite2.draw();
 	//_colourProgram2.disable(); 
 }
-
+SpriteInfo sp1, sp2;
 void main()
 {
 	tlog.writeLog("loggn\n");
@@ -303,33 +284,37 @@ void main()
 	//for(int a = 0; a < 998; a++)
 	//	game.addSprite(new Sprite({{-.5,0}, {1,2}}, "Assets/RandomButton.png"));
 
-	//engine stuff
-	//game.backgroundColour(.5, .5, .5);
-	//game.shaderInit(shaderInit);
+	
+
+	XboxController xbc;
+	xbc.buttons.buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xbc.numButtons);
+	printf("Number of joysticks: %d\n", xbc.numButtons);
+
+	VboInfo2D info {{0,0}, {(float)game.getWindowWidth() / 2,(float)game.getWindowHeight()/2}},
+		info2 {{(float)game.getWindowWidth() / 2,0}, {(float)game.getWindowWidth() / 2,(float)game.getWindowHeight()/2}};
+	//static Texture2D tex = ResourceManager::getTexture2D("Assets/bleach.jpg");
+	for(int a = 0; a < 1000; a++)
+	{
+		sp1 = {info,"Assets/bleach.jpg",0}, 
+			sp2 = {info2,"Assets/bleach.jpg",0};
+		game.addSprite(&sp1);
+		game.addSprite(&sp2);
+	}
+
+	AudioPlayer player;
+	Sound *sound = nullptr;
+
+	player.createSound(&sound, "Menu Music (Main Loop).mp3");
+	player.play(sound,true);
+
+//engine stuff
+//game.backgroundColour(.5, .5, .5);
+//game.shaderInit(shaderInit);
 	game.keyPressed(keyInputPressed);
 	game.keyReleased(keyInputReleased);
 	game.renderUpdate(render);
 	game.gameLoopUpdate(update);
 	game.run();
 
-
-	//const Quaternion q1 {{0,5,0,0}};
-	//Quaternion q2;
-	//q1*q2;
-	//q1.print();
-	//Matrix m1 = &vector<vector<float>>{
-	//{2.f,3.f},
-	//{3.f,4.f},
-	//{4,5}},
-	//m2 = &vector<vector<float>> {
-	//{3,4,5},
-	//{2,3,4}
-	//};
-	//m1.print();
-	//m2.print();
-	//Matrix::matrixMulti(m1, m2).print();
-	//
-	//printf("%f\n",m1[2][0]);
-
-
+	
 }

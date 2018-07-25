@@ -17,6 +17,8 @@ struct Quat
 
 	Quat & rotation(float a_ang, float a_dirX, float a_dirY, float a_dirZ);
 
+	Quat & rotation(Quat p, Quat q, Quat qc);
+
 	void rotate(float a_ang, float a_dirX, float a_dirY, float a_dirZ);
 
 	void scale(float x, float y, float z);

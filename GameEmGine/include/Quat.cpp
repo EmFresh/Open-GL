@@ -18,8 +18,14 @@ Quat & Quat::rotation(float a_ang, float a_dirX, float a_dirY, float a_dirZ)
 
 	Quat
 		q {cos(a_ang / 2),sin(a_ang / 2)*  (a_dirX / unit),sin(a_ang / 2)*  (a_dirY / unit),sin(a_ang / 2)*  (a_dirZ / unit)},
-		qc {cos(a_ang / 2),sin(a_ang / 2)* -(a_dirX / unit),sin(a_ang / 2)* -(a_dirY / unit),sin(a_ang / 2)* -(a_dirZ / unit)},
+		qc{cos(a_ang / 2),sin(a_ang / 2)* -(a_dirX / unit),sin(a_ang / 2)* -(a_dirY / unit),sin(a_ang / 2)* -(a_dirZ / unit)},
 		p {0, x,y,z};
+	Quat rot = q * p * qc;
+	return rot;
+}
+
+Quat & Quat::rotation(Quat p, Quat q, Quat qc)
+{
 	Quat rot = q * p * qc;
 	return rot;
 }

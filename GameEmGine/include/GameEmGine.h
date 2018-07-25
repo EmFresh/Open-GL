@@ -9,6 +9,7 @@
 #include "WindowCreator.h"
 #include "Camera2D.h"
 #include "SpriteBatch.h"
+#include "InputManager.h"
 //will get joystic input latter :>
 
 class GameEmGine
@@ -59,21 +60,21 @@ public:
 	/*
 	Gets window width in pixles
 	*/
-	static int getWindowWidth();
+	int getWindowWidth();
    /*
    Gets window height in pixles
    */
-	static int getWindowHeight();
+	int getWindowHeight();
 
 
 	void moveCameraBy(Coord3D pos);
 
 
-	void addSprite(Sprite* sprite);
+	void addSprite(SpriteInfo* sprite);
 
 	void removeSprite(int index);
 
-	void removeSprite(Sprite* sprite);
+	void removeSprite(SpriteInfo* sprite);
 
 	void addCamera(Camera3D*);
 
@@ -90,21 +91,19 @@ private:
 	void fpsLimiter();
 
 	static WindowCreator *_window;
-	static void keyUpdate(GLFWwindow *, int key, int scancode, int action, int mods);
+
 	static void update();
 	static void changeViewport(GLFWwindow * win, int w, int h);
-	static void(*_compileShaders)(), (*_render)(), (*_gameLoop)(), (*_keyUp)(int, int), (*_keyDown)(int, int);
-	static Colour _colour;
-	static std::map<int, Sprite *>*_spriteArr;
-	static int _numSprites;
-	static Camera3D *_mainCamera, **_cameras;
-	static GLSLCompiler *_cameraShader;
-	//std::map<int, Sprite *>*_tmpSpriteArr = new std::map<int, Sprite *>;
-	static SpriteBatch* _spriteBatch;
-	int _tmpNumSprites, _numCameras;
+	static void(*m_compileShaders)(), (*m_render)(), (*m_gameLoop)();
+	static ColourRGBA m_colour;
+	static Camera3D *m_mainCamera, **m_cameras;
+	static GLSLCompiler *m_cameraShader;
+	static SpriteBatch* m_spriteBatch;
+	static InputManager *_inputManager;
+	static SpriteInfo** _sprites;
+	static unsigned int _numCameras, _numSprites;
+	
 	float _fps;
 	short _fpsLimit;
-//	bool _vSync;
-
 };
 

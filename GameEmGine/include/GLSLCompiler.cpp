@@ -1,9 +1,9 @@
 #include "GLSLCompiler.h"
 
-GLSLCompiler::GLSLCompiler() :_attributeNum(0), _programID(0), _vertID(0), _fragID(0)
-{
+GLuint *GLSLCompiler::m_programs = new GLuint[0], *GLSLCompiler::m_attribs = new GLuint[0], GLSLCompiler::m_num;
 
-}
+GLSLCompiler::GLSLCompiler()
+{}
 
 GLSLCompiler::~GLSLCompiler()
 {}
@@ -11,78 +11,95 @@ GLSLCompiler::~GLSLCompiler()
 void GLSLCompiler::compileShaders(const std::string & vertFilePath, const std::string & fragFilePath)
 {
 	glewInit();
-	_programID = glCreateProgram();
-	_vertID = glCreateShader(GL_VERTEX_SHADER);
-	compileShader(VT_SHADER, vertFilePath, _vertID);
+	m_programID = glCreateProgram();
+	m_vertID = glCreateShader(GL_VERTEX_SHADER);
+	compileShader(VT_SHADER, vertFilePath, m_vertID);
 
-	_fragID = glCreateShader(GL_FRAGMENT_SHADER);
-	compileShader(FG_SHADER, fragFilePath, _fragID);
+	m_fragID = glCreateShader(GL_FRAGMENT_SHADER);
+	compileShader(FG_SHADER, fragFilePath, m_fragID);
 }
 
 void GLSLCompiler::linkShaders()
 {
-	glAttachShader(_programID, _vertID);
-	glAttachShader(_programID, _fragID);
+	glAttachShader(m_programID, m_vertID);
+	glAttachShader(m_programID, m_fragID);
 
-	glLinkProgram(_programID);
-	
+	glLinkProgram(m_programID);
+
 	GLint isLinked = 0;
-	glGetProgramiv(_programID, GL_LINK_STATUS, (int *)&isLinked);
+	glGetProgramiv(m_programID, GL_LINK_STATUS, (int *)&isLinked);
 	if(isLinked == GL_FALSE)
 	{
 		GLint maxLength = 0;
-		glGetProgramiv(_programID, GL_INFO_LOG_LENGTH, &maxLength);
+		glGetProgramiv(m_programID, GL_INFO_LOG_LENGTH, &maxLength);
 
 		// The maxLength includes the NULL character
 		char* infoLog = new char[maxLength];
-		glGetProgramInfoLog(_programID, maxLength, &maxLength, infoLog);
+		glGetProgramInfoLog(m_programID, maxLength, &maxLength, infoLog);
 
 		// We don't need the program anymore.
-		glDeleteProgram(_programID);
+		glDeleteProgram(m_programID);
 		// Don't leak shaders either.
-		glDeleteShader(_vertID);
-		glDeleteShader(_fragID);
+		glDeleteShader(m_vertID);
+		glDeleteShader(m_fragID);
 
 		// Use the infoLog as you see fit.
-		_log->writeLog(infoLog + '\n');
+		m_log->writeLog(infoLog + '\n');
 		// In this simple program, we'll just leave
 		return;
 	}
-	glDetachShader(_programID, _vertID);
-	glDetachShader(_programID, _fragID);
-	glDeleteShader(_vertID);
-	glDeleteShader(_fragID);
+	glDetachShader(m_programID, m_vertID);
+	glDetachShader(m_programID, m_fragID);
+	glDeleteShader(m_vertID);
+	glDeleteShader(m_fragID);
 }
 
 void GLSLCompiler::addAtribute(const std::string attributeName, short attribSize)
 {
-	glBindAttribLocation(_programID, _attributeNum, attributeName.c_str());
-	_attributeNum += attribSize;
+	glBindAttribLocation(m_programID, m_attribNum, attributeName.c_str());
+	m_attribNum += attribSize;
 }
 
 GLint GLSLCompiler::getUniformLocation(const char * uniform)
 {
-	return glGetUniformLocation(_programID, uniform);
+	return glGetUniformLocation(m_programID, uniform);
 }
 
 void GLSLCompiler::enable()
 {
-	if(!_enabled)
+	if(!m_enabled)
 	{
+		m_attribs = (GLuint*)realloc(m_attribs, ++m_num * sizeof(GLuint));
+		m_programs = (GLuint*)realloc(m_programs, m_num * sizeof(GLuint));
+
+		m_programs[m_num - 1] = m_programID;
 		findAtributes();
-		glUseProgram(_programID);
-		for(int a = 0; a < _attributeNum; a++)
+		m_attribs[m_num - 1] = m_attribNum;
+
+		glUseProgram(m_programID);
+		for(int a = 0; a < m_attribNum; a++)
 			glEnableVertexAttribArray(a);
+		m_enabled = !m_enabled;
 	}
 }
 
 void GLSLCompiler::disable()
 {
-	if(_enabled)
+	if(m_enabled)
 	{
-		glUseProgram(0);
-		for(int a = 0; a < _attributeNum; a++)
+		for(int a = 0; a < m_attribNum; a++)
 			glDisableVertexAttribArray(a);
+
+		if(m_num - 1 > 0)
+		{
+			glUseProgram(m_programs[--m_num - 1]);
+			for(int a = 0; a < m_attribs[m_num - 1]; a++)
+				glEnableVertexAttribArray(a);
+			m_enabled = false;
+		} else
+			glUseProgram(0);
+
+		m_enabled = !m_enabled;
 	}
 }
 
@@ -98,7 +115,7 @@ void GLSLCompiler::compileShader(Shaders shadNum, const std::string filePath, GL
 	shader.close();
 
 	if(shadNum == VT_SHADER) //stores vtsh
-		_vtsh = fileContent;
+		m_vtsh = fileContent;
 
 	const char* tmpFileContent = fileContent.c_str();
 	glShaderSource(id, 1, &tmpFileContent, nullptr);
@@ -115,7 +132,7 @@ void GLSLCompiler::compileShader(Shaders shadNum, const std::string filePath, GL
 		char* errorLog = new char[maxLength];
 		glGetShaderInfoLog(id, maxLength, &maxLength, errorLog);
 
-		_log->writeLog(errorLog + '\n');
+		m_log->writeLog(errorLog + '\n');
 		glDeleteShader(id);
 
 	}
@@ -124,14 +141,14 @@ void GLSLCompiler::compileShader(Shaders shadNum, const std::string filePath, GL
 void GLSLCompiler::findAtributes()
 {
 	unsigned short count = 0;
-	for(int a = 0; a < _vtsh.size(); a++)
+	for(int a = 0; a < m_vtsh.size(); a++)
 	{
-		if(_vtsh.substr(a, 3) == "in ")
+		if(m_vtsh.substr(a, 3) == "in ")
 		{
 			count++;
 			a += 3;
 		}
 	}
-	_attributeNum = count;
+	m_attribNum = count;
 }
 

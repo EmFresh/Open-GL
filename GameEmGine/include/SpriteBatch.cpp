@@ -3,7 +3,6 @@
 SpriteBatch::SpriteBatch() :_vboID(0), _vaoID(0)
 {}
 
-
 SpriteBatch::~SpriteBatch()
 {}
 
@@ -15,6 +14,13 @@ void SpriteBatch::init()
 void SpriteBatch::begin(GlyphSort type)
 {
 	_sortType = type;
+	for(int a = 0; a < _numGlyphs; a++)
+		delete _glyphs[a];
+	delete[] _glyphs;
+	delete[] _renderBatches;
+	_glyphs = new Glyph*[0];
+	_renderBatches = new RenderBatch[0];
+
 	_numGlyphs = 0;
 	_numRenderBatches = 0;
 }
@@ -25,36 +31,12 @@ void SpriteBatch::end()
 	createRenderBatches();
 }
 
-void SpriteBatch::draw(VboInfo2D * info, float depth, GLuint texture, const Colour * colour)
+void SpriteBatch::draw(VboInfo2D* info, float depth, GLuint texture, const ColourRGBA * colour)
 {
-	Glyph* newGlyph = new Glyph;
-	newGlyph->texture = texture;
-	newGlyph->depth = depth;
-
-	int w, h;
-	glfwGetFramebufferSize(glfwGetCurrentContext(), &w, &h);
-	info->size.width /= w;
-	info->size.height /= h;
-	info->position.x /= w;
-	info->position.y /= h;
-
-	newGlyph->bottomLeft.colour = *colour;
-	newGlyph->bottomLeft.coord = info->position;
-	newGlyph->bottomLeft.setUV(0, 0);
-
-	newGlyph->topLeft.colour = *colour;
-	newGlyph->topLeft.coord = Coord2D {0.f,info->size.height} +info->position;
-	newGlyph->topLeft.setUV(0, 1);
-
-	newGlyph->topRight.colour = *colour;
-	newGlyph->topRight.coord = Coord2D {info->size.width,info->size.height}+info->position;
-	newGlyph->topRight.setUV(1, 1);
-
-	newGlyph->bottomRight.colour = *colour;
-	newGlyph->bottomRight.coord = Coord2D {info->size.width,0.f}+info->position;
-	newGlyph->bottomRight.setUV(1, 0);
-
-	addGlyph(newGlyph);
+	//new Glyph();
+	
+	addGlyph(new Glyph(info,depth,texture,colour));
+	//delete colour;
 }
 
 void SpriteBatch::render()
@@ -78,8 +60,7 @@ void SpriteBatch::createRenderBatches()
 	if(!_numGlyphs)
 		return;
 
-	int
-		offset = 0,
+	int	offset = 0,
 		cv = 0;
 
 	addRenderBatch({(GLuint)offset,(GLuint)6,_glyphs[0]->texture});
@@ -90,6 +71,7 @@ void SpriteBatch::createRenderBatches()
 	verts[cv++] = _glyphs[0]->bottomRight;
 	verts[cv++] = _glyphs[0]->bottomLeft;
 	offset += 6;
+
 	for(int cg = 1; cg < _numGlyphs; cg++)
 	{
 		if(_glyphs[cg]->texture != _glyphs[cg - 1]->texture)
@@ -104,6 +86,7 @@ void SpriteBatch::createRenderBatches()
 		verts[cv++] = _glyphs[cg]->bottomLeft;
 		offset += 6;
 	}
+
 	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
 	//orphan data
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex2D)*(_numGlyphs * 6), nullptr, GL_DYNAMIC_DRAW);
@@ -111,7 +94,6 @@ void SpriteBatch::createRenderBatches()
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex2D)*(_numGlyphs * 6), verts);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 
 }
 
@@ -132,12 +114,12 @@ void SpriteBatch::createVertArrayObject()
 
 	//vertex atributes
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, coord));
-	//Colour atributes
+	//ColourRGBA atributes
 	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, colour));
 	//UV     atributes
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, uv));
 
-	glBindVertexArray(0);
+	glBindVertexArray(0);//Unbind Vertex Array
 }
 
 void SpriteBatch::addGlyph(Glyph *add)
@@ -182,12 +164,10 @@ int SpriteBatch::frontToBackSort(const void * a, const void * b)
 
 int SpriteBatch::backToFrontSort(const void * a, const void * b)
 {
-	return -((Glyph**)a)[0]->depth - ((Glyph**)b)[0]->depth;
+	return -(((Glyph**)a)[0]->depth - ((Glyph**)b)[0]->depth);
 }
 
 int SpriteBatch::byTextureSort(const void * a, const void * b)
 {
-	return ((Glyph**)a)[0]->texture < ((Glyph**)b)[0]->texture;
+	return ((Glyph**)a)[0]->texture - ((Glyph**)b)[0]->texture;
 }
-
-

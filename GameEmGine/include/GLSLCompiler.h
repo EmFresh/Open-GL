@@ -13,10 +13,10 @@ public:
 	//compiles shaders into code
 	void compileShaders(const std::string& vertFilePath, const std::string& fragFilePath);
 	//links vertx and fragment shaders into a single shader
-	void linkShaders();	   
+	void linkShaders();
 	/*
 	adds atributes to the shader
-    (ONLY USE if in-shader indexes are not specified)
+	(ONLY USE if in-shader indexes are not specified)
 	*/
 	void addAtribute(const std::string attributeName, short attribSize = 1);
 
@@ -37,13 +37,16 @@ private:
 	void compileShader(Shaders shadNum, const std::string filePath, GLuint id);
 	void findAtributes();
 
-	std::string _vtsh;
-	int _attributeNum;
-	bool _enabled=0;
-	GLuint _programID;
-	GLuint _vertID;
-	GLuint _fragID;
-	Logger *_log = new Logger("ShaderLog");
+	std::string m_vtsh;
+	int m_attribNum = 0;
+	bool m_enabled = false;
+	GLuint
+		m_programID = 0,
+		m_vertID = 0,
+		m_fragID = 0;
+	static GLuint *m_programs, *m_attribs, m_num;
+
+	Logger *m_log = new Logger("ShaderLog");
 };
 
 

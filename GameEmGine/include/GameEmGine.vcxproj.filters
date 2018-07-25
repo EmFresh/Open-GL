@@ -16,9 +16,6 @@
     <ClInclude Include="Matrix.h">
       <Filter>EmGine\Data Types</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>EmGine\Game Engine</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>EmGine\Resource Manager</Filter>
     </ClInclude>
@@ -49,6 +46,11 @@
     <ClInclude Include="SpriteBatch.h">
       <Filter>EmGine\Game Engine</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="AudioPlayer.h" />
+    <ClInclude Include="ModelBatch.h">
+      <Filter>EmGine\Game Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fileIO.cpp">
@@ -65,9 +67,6 @@
     </ClCompile>
     <ClCompile Include="Matrix.cpp">
       <Filter>EmGine\Data Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>EmGine\Game Engine</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>EmGine\Resource Manager</Filter>
@@ -91,6 +90,11 @@
       <Filter>EmGine\Game Engine</Filter>
     </ClCompile>
     <ClCompile Include="SpriteBatch.cpp">
+      <Filter>EmGine\Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="AudioPlayer.cpp" />
+    <ClCompile Include="ModelBatch.cpp">
       <Filter>EmGine\Game Engine</Filter>
     </ClCompile>
   </ItemGroup>
