@@ -16,9 +16,11 @@ public:
 	bool update();
 
 	void setPosition(Coord3D);
-	void moveBy(Coord3D position);
+	void movePositionBy(Coord3D position);
 	void setScale(const float);
 	void setAngle(float angle,Coord3D direction);
+
+	void moveAngleBy(float angle, Coord3D direction);
 
 	Quat& getPosition();
 	float& getScale();
@@ -34,6 +36,7 @@ protected:
 
 	glm::mat4 _cameraMat;
 	glm::mat4 _projMat;
+	glm::mat4 _rotMat;
 	glm::mat4 _viewMat;
 	glm::mat4 _objMat;
 };

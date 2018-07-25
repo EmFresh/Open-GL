@@ -68,6 +68,7 @@ public:
 
 
 	void moveCameraBy(Coord3D pos);
+	void moveAngleBy(float angle, Coord3D direction);
 
 
 	void addSprite(SpriteInfo* sprite);

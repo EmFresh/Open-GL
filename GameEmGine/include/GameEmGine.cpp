@@ -181,7 +181,12 @@ int GameEmGine::getWindowHeight()
 
 void GameEmGine::moveCameraBy(Coord3D pos)
 {
-	m_mainCamera->moveBy(pos);
+	m_mainCamera->movePositionBy(pos);
+}
+
+void GameEmGine::moveAngleBy(float angle, Coord3D direction)
+{
+	m_mainCamera->moveAngleBy(angle, direction);
 }
 
 void GameEmGine::addSprite(SpriteInfo* sprite)
