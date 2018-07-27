@@ -47,9 +47,14 @@
       <Filter>EmGine\Game Engine</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h" />
-    <ClInclude Include="AudioPlayer.h" />
-    <ClInclude Include="ModelBatch.h">
+    <ClInclude Include="Model.h">
       <Filter>EmGine\Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>EmGine\Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="EmGineAudioPlayer.h">
+      <Filter>EmGine\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -93,9 +98,14 @@
       <Filter>EmGine\Game Engine</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="AudioPlayer.cpp" />
-    <ClCompile Include="ModelBatch.cpp">
+    <ClCompile Include="Model.cpp">
       <Filter>EmGine\Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>EmGine\Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="EmGineAudioPlayer.cpp">
+      <Filter>EmGine\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +126,9 @@
     </Filter>
     <Filter Include="EmGine\Shader Stuff">
       <UniqueIdentifier>{bd22f3e9-7094-4193-8787-3ad8cdf2a642}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EmGine\Audio">
+      <UniqueIdentifier>{455a346d-f6c6-4bf4-ab90-c96c06c4406b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

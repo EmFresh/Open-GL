@@ -23,7 +23,7 @@ void Camera3D::init(Size3D size)
 
 	//_projMat = glm::frustum(0.f, size.width, 0.f, size.height, 0.1f, size.depth);
 	_projMat = glm::perspective(glm::radians(90.f), _size->width / _size->height, .1f, _size->depth);
-	_viewMat = glm::lookAt(glm::vec3{_position->x,_position->y,_position->z}, glm::vec3{_position->x,_position->y,_position->z - .1f}, glm::vec3{0.f,1.f,0.f});
+	_viewMat = glm::lookAt(glm::vec3{_position->x,_position->y,_position->z}, glm::vec3{_position->x,_position->y,_position->z - 10.f}, glm::vec3{0.f,1.f,0.f});
 }
 
 bool Camera3D::update()
@@ -80,7 +80,11 @@ void Camera3D::setAngle(float angle, Coord3D direction)
 
 void Camera3D::moveAngleBy(float angle, Coord3D direction)
 {
+	//glm rotation
 	_rotMat = glm::rotate(_rotMat, glm::radians(-angle), glm::vec3(direction.x, direction.y, direction.z));
+	
+	//my rotation
+	//_rotMat *= Quat::quatRotationMat(glm::radians(-angle), direction.x, direction.y, direction.z);
 	_cameraUpdate = true;
 }
 

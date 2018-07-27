@@ -1,5 +1,6 @@
 #pragma once
-#define _USE_MATH_DEFINES  
+#define _USE_MATH_DEFINES 
+#include <glm/glm.hpp>
 #include <vector>
 #include <iostream>
 #include <cmath>
@@ -28,6 +29,8 @@ struct Quat
 	void shear(float x, float y, float z);
 
 	void shear(float xy);
+
+	static glm::mat4 quatRotationMat(float a_ang, float a_dirX, float a_dirY, float a_dirZ);
 
 	void print() const;
 

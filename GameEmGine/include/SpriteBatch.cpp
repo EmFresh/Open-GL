@@ -101,8 +101,8 @@ void SpriteBatch::createVertArrayObject()
 {
 	if(!_vaoID)
 		glGenVertexArrays(1, &_vaoID);
-
 	glBindVertexArray(_vaoID);
+
 	if(!_vboID)
 		glGenBuffers(1, &_vboID);
 
@@ -112,11 +112,11 @@ void SpriteBatch::createVertArrayObject()
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 
-	//vertex atributes
+	//vertex     atributes
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, coord));
 	//ColourRGBA atributes
 	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, colour));
-	//UV     atributes
+	//UV         atributes
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, uv));
 
 	glBindVertexArray(0);//Unbind Vertex Array

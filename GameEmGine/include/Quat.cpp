@@ -5,7 +5,7 @@ using namespace std;
 Quat::Quat()
 {}
 
-Quat::Quat(float x, float y, float z) :w(0), x(x), y(y), z(z)
+Quat::Quat(float x, float y, float z):w(0), x(x), y(y), z(z)
 {}
 
 Quat::Quat(float w, float x, float y, float z) : w(w), x(x), y(y), z(z)
@@ -14,12 +14,17 @@ Quat::Quat(float w, float x, float y, float z) : w(w), x(x), y(y), z(z)
 Quat & Quat::rotation(float a_ang, float a_dirX, float a_dirY, float a_dirZ)
 {
 
-	float unit(sqrt(pow(a_dirX, 2) + pow(a_dirY, 2) + pow(a_dirZ, 2)));
+	float
+		unit(sqrt(pow(a_dirX, 2) + pow(a_dirY, 2) + pow(a_dirZ, 2))),
+		rotX = cos(a_ang / 2),
+		rotY = sin(a_ang / 2)*  (a_dirX / unit),
+		rotZ = sin(a_ang / 2)*  (a_dirY / unit),
+		rotW = sin(a_ang / 2)*  (a_dirZ / unit);
 
 	Quat
-		q {cos(a_ang / 2),sin(a_ang / 2)*  (a_dirX / unit),sin(a_ang / 2)*  (a_dirY / unit),sin(a_ang / 2)*  (a_dirZ / unit)},
+		q{cos(a_ang / 2),sin(a_ang / 2)*  (a_dirX / unit),sin(a_ang / 2)*  (a_dirY / unit),sin(a_ang / 2)*  (a_dirY / unit)},
 		qc{cos(a_ang / 2),sin(a_ang / 2)* -(a_dirX / unit),sin(a_ang / 2)* -(a_dirY / unit),sin(a_ang / 2)* -(a_dirZ / unit)},
-		p {0, x,y,z};
+		p{0, x,y,z};
 	Quat rot = q * p * qc;
 	return rot;
 }
@@ -50,6 +55,26 @@ void Quat::shear(float x, float y, float z)
 
 void Quat::shear(float xy)
 {}
+
+glm::mat4 Quat::quatRotationMat(float a_ang, float a_dirX, float a_dirY, float a_dirZ)
+{
+	float
+		unit(sqrt(pow(a_dirX, 2) + pow(a_dirY, 2) + pow(a_dirZ, 2))),
+		rotX = cos(a_ang / 2),
+		rotY = sin(a_ang / 2)*  (a_dirX / unit),
+		rotZ = sin(a_ang / 2)*  (a_dirY / unit),
+		rotW = sin(a_ang / 2)*  (a_dirZ / unit);
+
+	Quat
+		q{cos(a_ang / 2),sin(a_ang / 2)*  (a_dirX / unit),sin(a_ang / 2)*  (a_dirY / unit),sin(a_ang / 2)*  (a_dirY / unit)};
+	
+	//unit = sqrt(pow(q.x, 2) + pow(q.y, 2) + pow(q.z, 2) + +pow(q.w, 2));
+	//q.x /= unit, q.y /= unit, q.z /= unit, q.w /= unit;
+	return glm::mat4(1 - 2 * (q.y*q.y + q.z * q.z), 2 * (q.x*q.y - q.z * q.w), 2 * (q.x*q.z + q.y * q.w), 0,
+					 2 * (q.x*q.y + q.z * q.w), 1 - 2 * (q.x*q.x + q.z * q.z), 2 * (q.y*q.z - q.x * q.w), 0,
+					 2 * (q.x*q.z - q.y * q.w), 2 * (q.y*q.z + q.x * q.w), 1 - 2 * (q.x*q.x + q.y * q.y), 0,
+					 0, 0, 0, 1);
+}
 
 void Quat::print() const
 {

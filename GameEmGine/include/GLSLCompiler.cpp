@@ -8,6 +8,12 @@ GLSLCompiler::GLSLCompiler()
 GLSLCompiler::~GLSLCompiler()
 {}
 
+void GLSLCompiler::create(const std::string & vertFilePath, const std::string & fragFilePath)
+{
+	compileShaders(vertFilePath, fragFilePath);
+	linkShaders();
+}
+
 void GLSLCompiler::compileShaders(const std::string & vertFilePath, const std::string & fragFilePath)
 {
 	glewInit();

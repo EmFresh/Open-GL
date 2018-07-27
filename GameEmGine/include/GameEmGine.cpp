@@ -1,17 +1,18 @@
 #include "GameEmGine.h"
-#include "AudioPlayer.h"
+#include "EmGineAudioPlayer.h"
 
 #pragma region Static Variables
 
 void(*GameEmGine::m_compileShaders)(), (*GameEmGine::m_render)(), (*GameEmGine::m_gameLoop)();
 Camera3D *GameEmGine::m_mainCamera, **GameEmGine::m_cameras;
-GLSLCompiler *GameEmGine::m_cameraShader;
+GLSLCompiler *GameEmGine::m_cameraShader,*GameEmGine::m_modelShader;
 InputManager *GameEmGine::_inputManager;
 WindowCreator *GameEmGine::_window;	//must be init in the constructor
 ColourRGBA GameEmGine::m_colour {123,123,123};
 SpriteBatch *GameEmGine::m_spriteBatch;
+Model** GameEmGine::m_models = new Model*[0];
 SpriteInfo** GameEmGine::_sprites = new SpriteInfo*[0];
-unsigned int GameEmGine::_numCameras, GameEmGine::_numSprites;
+unsigned int GameEmGine::_numCameras, GameEmGine::_numSprites, GameEmGine::m_numModels;
 #pragma endregion
 
 //std::map<int, Sprite *>* GameEmGine::_spriteArr = new std::map<int, Sprite *>;
@@ -102,8 +103,9 @@ WindowCreator* GameEmGine::getWindow()
 void GameEmGine::shaderInit()
 {
 	m_cameraShader = new GLSLCompiler;
-	m_cameraShader->compileShaders("Shaders/Texture.vtsh", "Shaders/Texture.fmsh");
-	m_cameraShader->linkShaders();
+	m_cameraShader->create("Shaders/Texture.vtsh", "Shaders/Texture.fmsh");
+	m_modelShader = new GLSLCompiler;
+	m_modelShader->create("Shaders/Model.vtsh", "Shaders/Model.fmsh");
 }
 					  /*
 					  
@@ -179,14 +181,31 @@ int GameEmGine::getWindowHeight()
 	return _window->getScreenHeight();
 }
 
-void GameEmGine::moveCameraBy(Coord3D pos)
+void GameEmGine::moveCameraPositionBy(Coord3D pos)
 {
 	m_mainCamera->movePositionBy(pos);
 }
 
-void GameEmGine::moveAngleBy(float angle, Coord3D direction)
+void GameEmGine::setCameraPosition(Coord3D pos)
+{
+	m_mainCamera->setPosition(pos);
+}
+
+void GameEmGine::moveCameraAngleBy(float angle, Coord3D direction)
 {
 	m_mainCamera->moveAngleBy(angle, direction);
+}
+
+void GameEmGine::setCameraAngle(float angle, Coord3D direction)
+{
+	m_mainCamera->setAngle(angle, direction);
+}
+
+void GameEmGine::addModel(const char* path)
+{
+	Model* model=new Model(path);
+	m_models = (Model**) realloc(m_models, sizeof(Model*)*++m_numModels);
+	m_models[m_numModels - 1] =  model;
 }
 
 void GameEmGine::addSprite(SpriteInfo* sprite)
@@ -243,20 +262,31 @@ void GameEmGine::update()
 		m_render();
 
 
-	m_spriteBatch->begin();
-	for(int a = 0; a < _numSprites; a++)
-	{
-		m_cameraShader->enable();
-		m_spriteBatch->draw(&_sprites[a]->objectInfo, _sprites[a]->depth, _sprites[a]->texture);
-		if(a + 1 < _numSprites)
-			a++,
-			m_spriteBatch->draw(&_sprites[a]->objectInfo, _sprites[a]->depth, _sprites[a]->texture);
-	}
-	glUniformMatrix4fv(m_cameraShader->getUniformLocation("camera"), 1, GL_FALSE, &(m_mainCamera->getCameraMatrix()[0][0]));
-	glUniformMatrix4fv(m_cameraShader->getUniformLocation("object"), 1, GL_FALSE, &(m_mainCamera->getObjectMatrix()[0][0]));
+	//m_spriteBatch->begin();
+	//for(int a = 0; a < _numSprites; a++)
+	//{
+	//	m_cameraShader->enable();
+	//	m_spriteBatch->draw(&_sprites[a]->objectInfo, _sprites[a]->depth, _sprites[a]->texture);
+	//	if(a + 1 < _numSprites)
+	//		a++,
+	//		m_spriteBatch->draw(&_sprites[a]->objectInfo, _sprites[a]->depth, _sprites[a]->texture);
+	//}
+	//m_spriteBatch->end();
+	//m_spriteBatch->render();
+	//glUniformMatrix4fv(m_cameraShader->getUniformLocation("camera"), 1, GL_FALSE, &(m_mainCamera->getCameraMatrix()[0][0]));
+	//glUniformMatrix4fv(m_cameraShader->getUniformLocation("object"), 1, GL_FALSE, &(m_mainCamera->getObjectMatrix()[0][0]));
+	//m_cameraShader->disable();
 
-	m_spriteBatch->end();
-	m_spriteBatch->render();
+	for(int a = 0; a < m_numModels; a++)
+	{
+		m_modelShader->enable();
+		m_models[a]->render(*m_modelShader);
+	}
+	glm::mat4 model;
+	model = glm::scale(model, {.2f,.2f,.2f});
+	glUniformMatrix4fv(m_modelShader->getUniformLocation("camera"), 1, GL_FALSE, &(m_mainCamera->getCameraMatrix()[0][0]));
+	glUniformMatrix4fv(m_modelShader->getUniformLocation("object"), 1, GL_FALSE, &(m_mainCamera->getObjectMatrix()[0][0]));
+		m_modelShader->disable();
 
 	glfwPollEvents();//updates the event handelers
 

@@ -54,9 +54,13 @@ struct Coord2D
 		x /= coord, y /= coord;
 	}
 };
+
 struct Coord3D
 {
 	float x = 0, y = 0, z = 0;
+
+	Coord3D()
+	{}
 
 	Coord3D(Coord2D coord)
 	{
@@ -256,12 +260,42 @@ struct Vertex2D
 		printf("UV     : (%f, %f)\n\n", uv.u, uv.v);
 	}
 };
+
 struct Vertex3D
 {
-	Coord3D coord;
+	Coord3D coord,norm;
 	ColourRGBA	colour;
 	UV uv;
+
+	void setCoord3D(float x, float y,float z)
+	{
+		coord.x = x;
+		coord.y = y;
+		coord.z = z;
+	}
+	//uses the 0-255 representation instead of 0-1
+	void setColour(GLubyte r, GLubyte g, GLubyte b, GLubyte a = 255)
+	{
+		colour.r = r;
+		colour.g = g;
+		colour.b = b;
+		colour.a = a;
+	}
+	//sets uv
+	void setUV(float u, float v)
+	{
+		uv.u = u;
+		uv.v = v;
+	}
+
+	void print()
+	{
+		printf("Coord3D: (%f, %f, %f)\n", coord.x, coord.y,coord.z);
+		printf("Colour : (%d, %d, %d, %d)\n", colour.r, colour.g, colour.b, colour.a);
+		printf("UV     : (%f, %f)\n\n", uv.u, uv.v);
+	}
 };
+
 struct WindowInfo
 {
 	std::string *title = new std::string;

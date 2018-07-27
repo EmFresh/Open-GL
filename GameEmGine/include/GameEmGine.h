@@ -4,10 +4,11 @@
 #include <map>
 #include <string>
 #include "Logger.h"
-#include "Sprite.h"
+//#include "Sprite.h"
 #include "GLSLCompiler.h"
 #include "WindowCreator.h"
 #include "Camera2D.h"
+#include "Model.h"
 #include "SpriteBatch.h"
 #include "InputManager.h"
 //will get joystic input latter :>
@@ -67,9 +68,12 @@ public:
 	int getWindowHeight();
 
 
-	void moveCameraBy(Coord3D pos);
-	void moveAngleBy(float angle, Coord3D direction);
+	void moveCameraPositionBy(Coord3D pos);
+	void setCameraPosition(Coord3D pos);
+	void moveCameraAngleBy(float angle, Coord3D direction);
+	void setCameraAngle(float angle, Coord3D direction);
 
+	void addModel(const char * path);
 
 	void addSprite(SpriteInfo* sprite);
 
@@ -98,11 +102,12 @@ private:
 	static void(*m_compileShaders)(), (*m_render)(), (*m_gameLoop)();
 	static ColourRGBA m_colour;
 	static Camera3D *m_mainCamera, **m_cameras;
-	static GLSLCompiler *m_cameraShader;
+	static GLSLCompiler *m_cameraShader, *m_modelShader;
 	static SpriteBatch* m_spriteBatch;
 	static InputManager *_inputManager;
+	static Model** m_models;
 	static SpriteInfo** _sprites;
-	static unsigned int _numCameras, _numSprites;
+	static unsigned int _numCameras, _numSprites,m_numModels;
 	
 	float _fps;
 	short _fpsLimit;

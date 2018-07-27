@@ -2,14 +2,17 @@
 Logger ImageLoader::_imageLoader = ("imageLoader");
 Texture2D ImageLoader::loadImage2D(const char * path)
 {
-	Texture2D texture = {};
+	Texture2D texture;
 	int width, height;
 	
 	unsigned char *image = SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGBA);
 	
 	if(image == nullptr)
+	{
 		_imageLoader.writeLog("Image returned with null pointer\n");
-	
+		return texture;
+	}
+
 	//Bind texture to model
 	glGenTextures(1, &texture.id);
 	glBindTexture(GL_TEXTURE_2D, texture.id);

@@ -10,6 +10,9 @@ public:
 	GLSLCompiler();
 	~GLSLCompiler();
 
+	//compiles and links shaders
+	void create(const std::string& vertFilePath, const std::string& fragFilePath);
+
 	//compiles shaders into code
 	void compileShaders(const std::string& vertFilePath, const std::string& fragFilePath);
 	//links vertx and fragment shaders into a single shader
