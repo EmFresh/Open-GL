@@ -2,14 +2,16 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
+#include "Camera3D.h"
+#include "GLSLCompiler.h"
 #include "StructInfo.h"
 #include "ResourceManager.h"
 
-struct Glyph
+struct Glyph2D
 {
-	Glyph()
+	Glyph2D()
 	{}
-	Glyph(VboInfo2D* info, float depth, GLuint texture, const ColourRGBA * colour) :
+	Glyph2D(VboInfo2D* info, float depth, GLuint texture, const ColourRGBA * colour) :
 		texture(texture), depth(depth)
 	{
 
@@ -54,7 +56,7 @@ enum GlyphSort
 	BY_TEXTURE
 };
 
-struct RenderBatch
+struct RenderBatch2D
 {
 	GLuint
 		offset,
@@ -85,22 +87,24 @@ public:
 	void end();
 
 	void draw(VboInfo2D* info, float depth, GLuint texture, const ColourRGBA* colour = new ColourRGBA);
-	void render();
+	void render(GLSLCompiler & shader, Camera3D & cam);
+
 private:
 	void createRenderBatches();
 	void createVertArrayObject();
-	void addGlyph(Glyph*);
-	void addRenderBatch(RenderBatch);
+	void addGlyph(Glyph2D*);
+	void addRenderBatch(RenderBatch2D);
 	void sortGlyphs();
 
-	//sorting functions
+	//sorting functions//
+
 	static int frontToBackSort(const void* a, const void *b);
 	static int backToFrontSort(const void* a, const void *b);
 	static int byTextureSort(const void* a, const void *b);
 
 	GLuint _vboID, _vaoID;
-	Glyph** _glyphs;
-	RenderBatch* _renderBatches;
+	Glyph2D** _glyphs;
+	RenderBatch2D* _renderBatches;
 	GlyphSort _sortType;
 	unsigned int _numGlyphs, _numRenderBatches;
 };

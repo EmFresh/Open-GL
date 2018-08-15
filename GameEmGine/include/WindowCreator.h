@@ -31,7 +31,7 @@ public:
 	int& getScreenHeight();
 
 private:
-	GLFWwindow * _window;
+	GLFWwindow * m_window;
 	GLFWmonitor* _monitor;
 	WindowInfo *_info=new WindowInfo;
 	bool _full;		

@@ -7,13 +7,12 @@ out vec4 colour;
 //uniform float tm;
 //uniform sampler2D texSampler;
 
-uniform sampler2D diffuseTexture;
-//uniform sampler2D specularTexture[10];
+uniform sampler2D diffuseTexture1;
+uniform sampler2D specularTexture;
 
 void main()
 {
-	
 
-	colour = vec4 (texture(diffuseTexture,fragUV));
+	colour = texture(diffuseTexture1,fragUV);
     
 }

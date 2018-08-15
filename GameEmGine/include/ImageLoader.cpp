@@ -5,7 +5,7 @@ Texture2D ImageLoader::loadImage2D(const char * path)
 	Texture2D texture;
 	int width, height;
 	
-	unsigned char *image = SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGBA);
+	unsigned char *image = SOIL_load_image(path, &width, &height, nullptr, SOIL_LOAD_RGBA);
 	
 	if(image == nullptr)
 	{

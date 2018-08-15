@@ -13,7 +13,7 @@ Texture2D& Texture2DCache::getTexture(const char * path)
 			_texture.insert({path,tmp});
 			return _texture[path];
 	}
-	//printf("cashed image loaded\n\n");
+	//printf("cashed image loaded\n");
 	return it->second;
 }
 
@@ -25,7 +25,7 @@ Texture3D & Texture3DCache::getTexture(const char *path)
 	{
 		Texture3D tmp = ImageLoader::loadImage3D(path);
 		_texture.insert({path,tmp});
-		return tmp;
+		return _texture[path];
 	}
 	return it->second;
 }

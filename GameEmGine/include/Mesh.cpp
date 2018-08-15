@@ -16,7 +16,7 @@ Mesh::Mesh(std::vector<Vertex3D>verts,
 Mesh::~Mesh()
 {}
 
-void Mesh::render(GLSLCompiler shader)
+void Mesh::render(GLSLCompiler& shader)
 {
 	GLuint diffuseNr = 0, specularNr = 0;
 	for(int a = 0; a < m_textures.size(); a++)
@@ -30,13 +30,14 @@ void Mesh::render(GLSLCompiler shader)
 		else if(name == "specularTexture")
 			number = to_string(++specularNr);
 
-		glUniform1i(shader.getUniformLocation((name + number).c_str()), a);
+		glUniform1i(shader.getUniformLocation(("material." + name + number).c_str()), a);
 
 		glBindTexture(GL_TEXTURE_2D, m_textures[a].id);
 	}
 	glUniform1i(shader.getUniformLocation("material.shininess"), 16.f);
+
 	glBindVertexArray(m_vaoID);
-	glDrawElements(GL_TRIANGLES, m_indicies.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, m_indicies.size(), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 
 	for(int a = 0; a < m_textures.size(); a++)
@@ -76,3 +77,16 @@ void Mesh::init()
 
 	glBindVertexArray(0);
 }
+
+//void Mesh::updateVerts(Transformer & transform)
+//{
+//	if(transform.isUpdated())
+//		for(int a=0;a<m_verts.size();a++)
+//		{
+//			glm::vec4 tmp(m_verts[a].coord.x, m_verts[a].coord.y, m_verts[a].coord.z, 1);
+//			tmp = transform.getTransformation() * tmp;
+//			for(int b = 0; b < 3; b++)
+//				m_verts[a].coord[b] = tmp[b];
+//		}
+//	init();
+//}

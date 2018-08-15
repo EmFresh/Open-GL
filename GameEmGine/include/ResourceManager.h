@@ -1,23 +1,26 @@
 #pragma once
 #include <GL\glew.h>
-#include <unordered_map>
+#include <map>
+#include <string>
 #include "Texture.h"
 #include "ImageLoader.h"
 
 struct Texture2DCache
-{						 
+{			
+	//creates a texture
 	Texture2D& getTexture(const char*);
 
 private:
-	std::unordered_map<const char*, Texture2D> _texture;
+	std::map<std::string, Texture2D> _texture;
 };
 		
 struct Texture3DCache
 {		 
+	//creates a texture
 	Texture3D& getTexture(const char*);
 
 private:
-	std::unordered_map<const char*, Texture3D> _texture;
+	std::map<std::string, Texture3D> _texture;
 };
 
 class ResourceManager

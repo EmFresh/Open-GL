@@ -31,23 +31,23 @@ int WindowCreator::createWindow(std::string name, Size3D size, Coord2D position,
 	_info->position = &position;
 
 
-	_window = glfwCreateWindow(size.width, size.height, (*(_info->title) = name).c_str(), nullptr, nullptr);
-	glfwMakeContextCurrent(_window); //gives opengl the window it renders to
+	m_window = glfwCreateWindow(size.width, size.height, (*(_info->title) = name).c_str(), nullptr, nullptr);
+	glfwMakeContextCurrent(m_window); //gives opengl the window it renders to
 	
 	setFullScreen(fullScreeen);
 	setVisable(visable);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	return _window != nullptr ? WINDOW_CREATED : WINDOW_FAILED;
+	return m_window != nullptr ? WINDOW_CREATED : WINDOW_FAILED;
 }
 
 void WindowCreator::setVisable(bool viz)
 {
 	if(viz)
-		glfwShowWindow(_window);
+		glfwShowWindow(m_window);
 	else
-		glfwHideWindow(_window);
+		glfwHideWindow(m_window);
 }
 
 void WindowCreator::setFullScreen(bool full)
@@ -61,31 +61,31 @@ void WindowCreator::setFullScreen(bool full)
 	if(full)
 	{
 
-		glfwGetWindowSize(_window, &w, &h);
+		glfwGetWindowSize(m_window, &w, &h);
 		_info->size = new Size3D {float(w), float(h)};
-		glfwGetWindowPos(_window, &w, &h);
+		glfwGetWindowPos(m_window, &w, &h);
 		_info->position = new Coord2D {float(w), float(h)};
 
 
-		glfwGetCursorPos(_window,&x,&y);
+		glfwGetCursorPos(m_window,&x,&y);
 
 		// get reolution of monitor
 		int tmp;
 		const GLFWvidmode * mode = glfwGetVideoMode(glfwGetMonitors(&tmp)[_info->monitor]);
 
 		// switch to full screen
-		glfwGetFramebufferSize(_window, &w, &h);
+		glfwGetFramebufferSize(m_window, &w, &h);
 		glViewport(0, 0, w, h);
-		glfwSetWindowMonitor(_window, _monitor, 0, 0, mode->width, mode->height, 0);
+		glfwSetWindowMonitor(m_window, _monitor, 0, 0, mode->width, mode->height, 0);
 
-		glfwSetCursorPos(_window,x,y);
+		glfwSetCursorPos(m_window,x,y);
 	} else
 	{
-		glfwGetCursorPos(_window, &x, &y);
-		glfwGetFramebufferSize(_window, &w, &h);
+		glfwGetCursorPos(m_window, &x, &y);
+		glfwGetFramebufferSize(m_window, &w, &h);
 		glViewport(0, 0, w, h);
-		glfwSetWindowMonitor(_window, nullptr, _info->position->x, _info->position->y, _info->size->width, _info->size->height, 0);
-		glfwSetCursorPos(_window, x, y);
+		glfwSetWindowMonitor(m_window, nullptr, _info->position->x, _info->position->y, _info->size->width, _info->size->height, 0);
+		glfwSetCursorPos(m_window, x, y);
 	//	_monitor = nullptr;
 	}
 
@@ -94,7 +94,7 @@ void WindowCreator::setFullScreen(bool full)
 
 GLFWwindow* WindowCreator::getWindow()
 {
-	return _window;
+	return m_window;
 }
 
 std::string & WindowCreator::getTitle()
@@ -110,13 +110,13 @@ Size3D& WindowCreator::getScreenSize()
 int& WindowCreator::getScreenWidth()
 {
 	int w, h;
-	glfwGetFramebufferSize(_window, &w, &h);
+	glfwGetFramebufferSize(m_window, &w, &h);
 	return w;
 }
 
 int& WindowCreator::getScreenHeight()
 {
 	int w, h;
-	glfwGetFramebufferSize(_window, &w, &h);
+	glfwGetFramebufferSize(m_window, &w, &h);
 	return h;
 }

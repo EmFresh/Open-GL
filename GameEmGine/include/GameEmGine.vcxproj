@@ -177,12 +177,14 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelBatch.h" />
     <ClInclude Include="Quat.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteBatch.h" />
     <ClInclude Include="StructInfo.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Transformer.h" />
     <ClInclude Include="WindowCreator.h" />
   </ItemGroup>
   <ItemGroup>
@@ -198,10 +200,12 @@
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ModelBatch.cpp" />
     <ClCompile Include="Quat.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteBatch.cpp" />
+    <ClCompile Include="Transformer.cpp" />
     <ClCompile Include="WindowCreator.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

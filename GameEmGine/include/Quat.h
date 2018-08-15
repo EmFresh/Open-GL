@@ -16,31 +16,25 @@ struct Quat
 	Quat(float x, float y, float z);
 	Quat(float w, float x, float y, float z);
 
+	Quat& normal();
+	void normalize();
+
 	Quat & rotation(float a_ang, float a_dirX, float a_dirY, float a_dirZ);
 
 	Quat & rotation(Quat p, Quat q, Quat qc);
 
 	void rotate(float a_ang, float a_dirX, float a_dirY, float a_dirZ);
 
-	void scale(float x, float y, float z);
-
-	void scale(float xyz);
-
-	void shear(float x, float y, float z);
-
-	void shear(float xy);
-
 	static glm::mat4 quatRotationMat(float a_ang, float a_dirX, float a_dirY, float a_dirZ);
 
 	void print() const;
 
 	float& operator[](int index)const;
-
 	Quat operator*(Quat a_quat)	const;
-	Quat operator+(Quat a_quat);
-	void operator+=(Quat a_quat);
-	Quat operator-(Quat a_quat);
-	void operator-=(Quat a_quat);
+	Quat operator+(Quat a_quat)const;
+	void operator+=(Quat a_quat)const;
+	Quat operator-(Quat a_quat)const;
+	void operator-=(Quat a_quat)const;
 private:
 	float w;
 };
